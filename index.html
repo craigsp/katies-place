@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Katie's Place">
+<meta name="theme-color" content="#FBF7F1">
+<title>Katie's Place of Refuge</title>
+<style>
+  :root{
+    --bg:#FBF7F1;
+    --card:#FFFFFF;
+    --ink:#2C2724;
+    --soft:#7A726A;
+    --line:#ECE3D7;
+    --base:18px;
+
+    --laugh:#E07A5F;   --laugh-bg:#FBEDE7;
+    --lift:#D99B3F;    --lift-bg:#FAF0DC;
+    --sit:#5F9E97;     --sit-bg:#E6F1EF;
+    --breathe:#7B9FD4; --breathe-bg:#EAF0FA;
+    --home:#9A8C7B;
+    --heart:#E0607A;
+
+    --tabbar:78px;
+  }
+  body.lg{ --base:21px; }
+
+  *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body{ margin:0; padding:0; height:100%; }
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;
+    font-size:var(--base);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    -webkit-text-size-adjust:100%;
+    overscroll-behavior-y:none;
+  }
+  h1,h2,h3,.serif{ font-family:Georgia,"Times New Roman",serif; font-weight:600; }
+
+  /* ---------------- Onboarding ---------------- */
+  .onboard{
+    position:fixed; inset:0; z-index:100; overflow-y:auto;
+    background:
+      radial-gradient(70% 50% at 25% 18%, rgba(232,137,90,.55), transparent 70%),
+      radial-gradient(65% 45% at 80% 28%, rgba(216,125,99,.45), transparent 72%),
+      radial-gradient(80% 60% at 50% 95%, rgba(214,158,62,.35), transparent 70%),
+      #FCF3EA;
+    display:flex; align-items:center; justify-content:center;
+    padding:calc(env(safe-area-inset-top) + 28px) 24px calc(env(safe-area-inset-bottom) + 36px);
+  }
+  .onboard.gone{ display:none; }
+  .ob-inner{ max-width:480px; text-align:center; }
+  .ob-emoji{ font-size:3.4rem; line-height:1; margin-bottom:10px; }
+  .ob-title{ font-size:2.2rem; color:#5A3826; margin:0; line-height:1.15; }
+  .ob-sub{ font-family:Georgia,serif; font-style:italic; color:#9A6A3A; margin:6px 0 22px; font-size:1.05rem; }
+  .ob-body p{ font-size:1.16rem; line-height:1.65; color:#42352B; margin:0 0 16px; }
+  .ob-body p:last-child{ font-weight:600; }
+  .ob-btn{
+    display:block; width:100%; margin:22px 0 0; border:none; cursor:pointer;
+    border-radius:16px; padding:18px; font:inherit; font-size:1.1rem; font-weight:600;
+    background:#D9774E; color:#fff; box-shadow:0 3px 12px rgba(150,80,40,.25);
+  }
+  .ob-btn:active{ filter:brightness(.96); }
+  .ob-btn.ghost{ background:transparent; color:#9A6A3A; box-shadow:none; font-weight:500; font-size:1rem; padding:14px; margin-top:8px; }
+  .ob-confirm{ margin-top:26px; border-top:1px solid rgba(154,106,58,.25); padding-top:22px; }
+  .ob-confirm p{ font-size:1.05rem; color:#5A463A; margin:0; line-height:1.6; }
+  .ob-confirm[hidden]{ display:none; }
+
+  /* ---------------- App frame ---------------- */
+  .screen{ display:none; padding:0 18px calc(var(--tabbar) + env(safe-area-inset-bottom) + 24px); min-height:100%; animation:fade .25s ease; }
+  .screen.active{ display:block; }
+  @keyframes fade{ from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:none;} }
+  @media (prefers-reduced-motion:reduce){ .screen,.onboard{ animation:none; } }
+
+  .topbar{ padding:calc(env(safe-area-inset-top) + 14px) 0 6px; }
+  .eyebrow{ font-size:.8rem; letter-spacing:.08em; text-transform:uppercase; color:var(--soft); font-weight:600; }
+  .screen-title{ font-size:1.7rem; margin:2px 0 0; line-height:1.2; }
+
+  /* ---------------- Home hero (Option E) ---------------- */
+  .hero{ position:relative; text-align:center; padding:calc(env(safe-area-inset-top) + 26px) 8px 20px; overflow:hidden; }
+  .hero::before{
+    content:""; position:absolute; left:-12%; right:-12%; top:-34%; height:150%; z-index:0;
+    background:
+      radial-gradient(58% 48% at 30% 32%, rgba(232,137,90,.42), transparent 70%),
+      radial-gradient(54% 44% at 73% 40%, rgba(216,125,99,.38), transparent 72%),
+      radial-gradient(52% 52% at 50% 80%, rgba(214,158,62,.30), transparent 70%);
+    filter:blur(20px);
+  }
+  .hero-content{ position:relative; z-index:1; }
+  .hero-emoji{ font-size:3rem; line-height:1; margin-bottom:4px; }
+  .hero-title{ font-size:2rem; color:#5A3826; margin:0; line-height:1.14; }
+  .hero-sub{ font-family:Georgia,serif; font-style:italic; color:#9A6A3A; margin-top:5px; font-size:1.02rem; letter-spacing:.02em; }
+
+  .welcome{ font-size:1.1rem; line-height:1.85; margin:16px 2px 24px; color:var(--ink); text-align:center; }
+  .mw{ display:inline-block; padding:2px 11px; border-radius:999px; font-size:.92rem; font-weight:600; margin:1px; }
+  .mw-r{ background:#E7EAF0; color:#5C6B86; }
+  .mw-fo{ background:#ECE7F4; color:#6E5E96; }
+  .mw-fi{ background:#F7EDD3; color:#937012; }
+  .mw-fu{ background:#FBE4DC; color:#B85234; }
+
+  /* ---------------- Mood buttons ---------------- */
+  .moods{ display:grid; gap:13px; }
+  .mood{
+    border:none; width:100%; text-align:left; cursor:pointer; border-radius:20px; padding:20px;
+    color:#fff; font-family:Georgia,serif; font-size:1.32rem; font-weight:600;
+    display:flex; align-items:center; gap:14px; box-shadow:0 2px 10px rgba(70,55,40,.10);
+    transition:transform .08s ease, filter .08s ease;
+  }
+  .mood:active{ transform:scale(.985); filter:brightness(.97); }
+  .mood small{ display:block; font-family:-apple-system,sans-serif; font-weight:400; font-size:.86rem; opacity:.92; margin-top:2px; }
+  .mood .mi{ flex:0 0 auto; width:34px; height:34px; }
+  .mood.m-laugh{ background:var(--laugh); }
+  .mood.m-lift{ background:var(--lift); }
+  .mood.m-sit{ background:var(--sit); }
+  .mood.m-breathe{ background:var(--breathe); }
+
+  /* ---------------- Yours / favorites ---------------- */
+  .yours{ margin:30px 0 6px; }
+  .yours-h{ font-size:1.3rem; margin:0 0 4px; display:flex; align-items:center; gap:8px; }
+  .yours-note{ font-size:.84rem; color:var(--soft); font-style:italic; margin:0 0 14px; line-height:1.5; }
+  .yours-empty{
+    background:var(--card); border:1px dashed var(--line); border-radius:18px;
+    padding:24px 20px; text-align:center; color:var(--soft); line-height:1.55;
+  }
+  .ycard{
+    background:var(--card); border:1px solid var(--line); border-radius:18px;
+    padding:18px 18px 12px; margin-bottom:12px; box-shadow:0 1px 3px rgba(70,55,40,.05);
+  }
+  .ycard .body{ font-size:1.08rem; line-height:1.55; }
+
+  /* ---------------- ColonTown ---------------- */
+  .ct{ margin:26px 0 8px; background:var(--card); border:1px solid var(--line); border-radius:20px; padding:20px; box-shadow:0 1px 3px rgba(70,55,40,.05); }
+  .ct-logo{ display:inline-flex; align-items:baseline; gap:1px; text-decoration:none; font-family:Georgia,serif; font-weight:700; font-size:1.5rem; letter-spacing:-.01em; margin-bottom:4px; }
+  .ct-logo .a{ color:#C25B3F; } .ct-logo .b{ color:#3E7C74; }
+  .ct-tag{ color:var(--soft); font-size:.98rem; margin:0 0 14px; font-style:italic; }
+  .ct-link{ display:flex; align-items:center; justify-content:space-between; padding:13px 0; border-top:1px solid var(--line); text-decoration:none; color:var(--ink); gap:12px; }
+  .ct-link b{ font-weight:600; } .ct-link span{ display:block; }
+  .ct-link span span{ font-size:.84rem; color:var(--soft); margin-top:1px; }
+  .ct-link .arr{ color:#C8BCAC; flex:0 0 auto; font-size:1.3rem; }
+
+  /* ---------------- Settings + links ---------------- */
+  .home-foot{ margin-top:26px; }
+  .setting{ background:var(--card); border:1px solid var(--line); border-radius:18px; padding:16px 18px; margin-bottom:14px; }
+  .setting h3{ font-size:1.05rem; margin:0 0 12px; }
+  .seg{ display:inline-flex; border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+  .seg button{ font:inherit; font-size:.98rem; border:none; background:var(--card); color:var(--ink); padding:10px 18px; cursor:pointer; min-height:44px; }
+  .seg button[aria-pressed="true"]{ background:var(--ink); color:#fff; font-weight:600; }
+  .rate-row{ display:flex; align-items:center; gap:12px; }
+  .rate-row label{ font-size:.92rem; color:var(--soft); flex:0 0 auto; }
+  input[type=range]{ flex:1; accent-color:var(--breathe); height:30px; }
+  .linkbtn{ display:flex; align-items:center; justify-content:space-between; width:100%; background:var(--card); border:1px solid var(--line); border-radius:18px; padding:17px 18px; font:inherit; color:var(--ink); cursor:pointer; text-align:left; }
+  .linkbtn .arr{ color:#C8BCAC; font-size:1.3rem; }
+  .linkbtn span span{ display:block; font-size:.83rem; color:var(--soft); font-weight:400; margin-top:2px; }
+
+  /* ---------------- Topic grid ---------------- */
+  .lead{ color:var(--soft); margin:6px 0 18px; font-size:1.02rem; }
+  .topics{ display:grid; grid-template-columns:1fr 1fr; gap:11px; }
+  .topic{ border:1px solid var(--line); background:var(--card); border-radius:16px; padding:15px 14px; min-height:74px; cursor:pointer; font:inherit; text-align:left; color:var(--ink); display:flex; align-items:center; line-height:1.3; transition:transform .08s ease; }
+  .topic:active{ transform:scale(.97); }
+  .topic .name{ font-family:Georgia,serif; font-size:1.04rem; }
+  .topic.ready .name{ font-weight:700; }
+  .topic.wide{ grid-column:1 / -1; min-height:0; justify-content:center; text-align:center; }
+  .topic .dot{ width:8px; height:8px; border-radius:50%; background:currentColor; display:inline-block; margin-right:7px; opacity:.55; }
+  .theme-laugh .accent,.theme-laugh .dot{ color:var(--laugh); }
+  .theme-lift .accent,.theme-lift .dot{ color:var(--lift); }
+  .theme-sit .accent,.theme-sit .dot{ color:var(--sit); }
+
+  /* ---------------- Reader / pieces ---------------- */
+  .reader{ display:none; } .reader.active{ display:block; }
+  .back{ display:inline-flex; align-items:center; gap:5px; background:none; border:none; font:inherit; color:var(--soft); cursor:pointer; padding:6px 0; margin-bottom:2px; font-size:1rem; }
+  .piece{ background:var(--card); border:1px solid var(--line); border-radius:22px; padding:26px 22px 18px; margin:8px 0 16px; box-shadow:0 2px 12px rgba(70,55,40,.06); min-height:180px; display:flex; flex-direction:column; }
+  .piece .body{ font-size:1.22rem; line-height:1.62; flex:1; }
+  .piece.laugh{ border-top:5px solid var(--laugh); }
+  .piece.lift{ border-top:5px solid var(--lift); }
+  .piece.sit{ border-top:5px solid var(--sit); }
+  .piece-foot{ display:flex; align-items:center; justify-content:space-between; margin-top:18px; gap:12px; }
+  .src{ font-size:.85rem; }
+  .src a{ color:var(--soft); text-decoration:none; border-bottom:1px dotted #C8BCAC; }
+  .acts{ display:flex; gap:9px; flex:0 0 auto; }
+  .act{ width:46px; height:46px; border-radius:50%; border:1px solid var(--line); background:var(--bg); cursor:pointer; display:flex; align-items:center; justify-content:center; padding:0; }
+  .act svg{ width:22px; height:22px; }
+  .act.speak svg{ stroke:var(--ink); fill:none; }
+  .act.speak.on{ background:var(--ink); border-color:var(--ink); }
+  .act.speak.on svg{ stroke:#fff; }
+  .act.heart svg{ fill:none; stroke:#C9A9A9; stroke-width:1.7; }
+  .act.heart.on{ background:#FBE9EE; border-color:#F3CBD6; }
+  .act.heart.on svg{ fill:var(--heart); stroke:var(--heart); }
+  .another{ width:100%; border:none; border-radius:16px; padding:17px; font:inherit; font-weight:600; font-size:1.08rem; color:#fff; cursor:pointer; }
+  .another:active{ filter:brightness(.97); }
+  .a-laugh{ background:var(--laugh); } .a-lift{ background:var(--lift); } .a-sit{ background:var(--sit); }
+  .counter{ text-align:center; color:var(--soft); font-size:.85rem; margin-top:12px; }
+  .note{ font-size:.82rem; color:var(--soft); font-style:italic; margin-top:20px; line-height:1.5; }
+  .placeholder{ background:var(--card); border:1px dashed var(--line); border-radius:20px; padding:30px 22px; text-align:center; color:var(--soft); margin-top:14px; }
+  .placeholder .serif{ font-size:1.2rem; color:var(--ink); display:block; margin-bottom:8px; }
+
+  /* ---------------- Breathe ---------------- */
+  .pickrow{ display:flex; gap:9px; flex-wrap:wrap; margin:4px 0 8px; }
+  .pick{ border:1px solid var(--line); background:var(--card); border-radius:999px; padding:11px 16px; font:inherit; font-size:.96rem; cursor:pointer; color:var(--ink); min-height:44px; }
+  .pick:active{ background:var(--breathe-bg); }
+  .section-h{ font-size:.82rem; letter-spacing:.06em; text-transform:uppercase; color:var(--soft); font-weight:600; margin:22px 0 9px; }
+  .practiced{
+    background:var(--sit-bg); border:1px solid #CFE4E0; border-radius:16px; padding:15px 17px; margin:6px 0 4px;
+    font-size:.98rem; line-height:1.55; color:#2F5A55;
+  }
+  .practiced b{ color:#26544E; }
+  .guide{ background:var(--breathe-bg); border:1px solid #D8E4F4; border-radius:20px; padding:22px; margin-bottom:8px; }
+  .guide h3{ font-size:1.25rem; margin:0 0 4px; }
+  .guide .dur{ color:var(--soft); font-size:.9rem; margin-bottom:14px; }
+  .guide p{ margin:0 0 12px; font-size:1.1rem; line-height:1.6; }
+  .guide .speakbtn{ display:inline-flex; align-items:center; gap:9px; border:none; border-radius:14px; background:var(--breathe); color:#fff; font:inherit; font-weight:600; padding:14px 20px; cursor:pointer; font-size:1.02rem; }
+  .guide .speakbtn.on{ background:#33507e; }
+  .res{ display:flex; align-items:center; justify-content:space-between; gap:12px; background:var(--card); border:1px solid var(--line); border-radius:16px; padding:15px 16px; margin-bottom:10px; text-decoration:none; color:var(--ink); }
+  .res b{ font-weight:600; } .res span{ display:block; }
+  .res span span{ font-size:.83rem; color:var(--soft); margin-top:2px; }
+  .res .arr{ color:#C8BCAC; flex:0 0 auto; font-size:1.25rem; }
+  .freebadge{ font-size:.7rem; font-weight:700; color:#2f7d4f; background:#e3f4e9; padding:2px 8px; border-radius:999px; letter-spacing:.03em; }
+
+  /* ---------------- Tab bar ---------------- */
+  .tabbar{ position:fixed; left:0; right:0; bottom:0; z-index:50; background:rgba(251,247,241,.94); -webkit-backdrop-filter:saturate(180%) blur(16px); backdrop-filter:saturate(180%) blur(16px); border-top:1px solid var(--line); display:flex; padding-bottom:env(safe-area-inset-bottom); }
+  .tab{ flex:1; background:none; border:none; cursor:pointer; padding:9px 2px 7px; display:flex; flex-direction:column; align-items:center; gap:3px; color:var(--soft); font-size:.66rem; font-weight:600; }
+  .tab svg{ width:26px; height:26px; stroke:var(--soft); fill:none; stroke-width:1.7; }
+  .tab[data-active="true"]{ color:var(--ink); }
+  .tab[data-active="true"][data-k="home"]{ color:var(--home); }
+  .tab[data-active="true"][data-k="laugh"]{ color:var(--laugh); }
+  .tab[data-active="true"][data-k="lift"]{ color:var(--lift); }
+  .tab[data-active="true"][data-k="sit"]{ color:var(--sit); }
+  .tab[data-active="true"][data-k="breathe"]{ color:var(--breathe); }
+  .tab[data-active="true"] svg{ stroke:currentColor; }
+  .tab .lbl{ line-height:1.05; text-align:center; }
+</style>
+</head>
+<body>
+
+<!-- ============ ONBOARDING ============ -->
+<div class="onboard" id="onboard">
+  <div class="ob-inner">
+    <div class="ob-emoji">🫶</div>
+    <h1 class="ob-title">Katie's Place<br>of Refuge</h1>
+    <div class="ob-sub">For You · With You</div>
+    <div class="ob-body" id="obBody">
+      <p>This place was made just for you, Katie — gathered from the real voices of people who have been exactly where you are: rectal cancer patients, survivors, and the people who love them.</p>
+      <p>Whatever you need in this moment — a laugh, a lift, some quiet company, or just a breath — it is in here.</p>
+      <p>It's yours.</p>
+    </div>
+    <button class="ob-btn" id="obReady">I'm ready — take me in →</button>
+    <div class="ob-confirm" id="obConfirm" hidden>
+      <p>Just so you know — once you step inside, this welcome won't appear again. That's okay. Everything it says stays true every single time you open Katie's Place of Refuge.</p>
+      <button class="ob-btn" id="obYes">Yes, take me in →</button>
+      <button class="ob-btn ghost" id="obAgain">← Wait, let me read that again</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ HOME ============ -->
+<section class="screen active" id="s-home">
+  <header class="hero">
+    <div class="hero-content">
+      <div class="hero-emoji">🫶</div>
+      <h1 class="hero-title">Katie's Place of Refuge</h1>
+      <div class="hero-sub">For You · With You</div>
+    </div>
+  </header>
+
+  <p class="welcome">However this moment is going — <span class="mw mw-r">rough</span> <span class="mw mw-fo">foggy</span> <span class="mw mw-fi">fine</span> <span class="mw mw-fu">furious</span> — Katie's Place of Refuge is here for you.</p>
+
+  <div class="moods">
+    <button class="mood m-laugh" data-go="laugh">
+      <svg class="mi" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M8 14c1 1.5 2.5 2 4 2s3-.5 4-2"/><path d="M9 9h.01M15 9h.01"/></svg>
+      <span>Ha. Good One.<small>When you need to laugh at all of this</small></span>
+    </button>
+    <button class="mood m-lift" data-go="lift">
+      <svg class="mi" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.2 5.2l1.4 1.4M17.4 17.4l1.4 1.4M18.8 5.2l-1.4 1.4M6.6 17.4l-1.4 1.4"/></svg>
+      <span>Time for a Lift<small>A little hope, the real kind</small></span>
+    </button>
+    <button class="mood m-sit" data-go="sit">
+      <svg class="mi" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.4-9-9.2C1.8 7.7 3.6 5 6.4 5 8.3 5 9.7 6.2 12 8.7 14.3 6.2 15.7 5 17.6 5c2.8 0 4.6 2.7 3.4 5.8C19 15.6 12 20 12 20z"/></svg>
+      <span>Sit With Me<small>No pep talk. Just company.</small></span>
+    </button>
+    <button class="mood m-breathe" data-go="breathe">
+      <svg class="mi" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"><path d="M3 9h11a3 3 0 1 0-3-3"/><path d="M3 14h15a3 3 0 1 1-3 3"/></svg>
+      <span>Just Breathe<small>Two quiet minutes, whenever</small></span>
+    </button>
+  </div>
+
+  <!-- Yours -->
+  <section class="yours">
+    <h2 class="yours-h">Yours <span>❤️</span></h2>
+    <p class="yours-note">Tap the heart on anything to keep it here. Your saves stay as long as you keep the app — screenshot anything precious, just in case.</p>
+    <div id="yoursList"></div>
+  </section>
+
+  <!-- ColonTown -->
+  <div class="ct">
+    <a class="ct-logo" href="https://colontown.org" target="_blank" rel="noopener"><span class="a">COLON</span><span class="b">TOWN</span></a>
+    <p class="ct-tag">Your people are already there.</p>
+    <a class="ct-link" href="https://learn.colontown.org" target="_blank" rel="noopener"><span><b>ColonTown University</b><span>Free learning, by patients for patients</span></span><span class="arr">›</span></a>
+    <a class="ct-link" href="https://learn.colontown.org/doc-talks/" target="_blank" rel="noopener"><span><b>Doc Talks</b><span>Live sessions with rectal cancer specialists</span></span><span class="arr">›</span></a>
+    <a class="ct-link" href="https://colontown.org/community/" target="_blank" rel="noopener"><span><b>Find your neighborhood</b><span>Chemoradiation, rectal, side effects, faith &amp; more</span></span><span class="arr">›</span></a>
+  </div>
+
+  <div class="home-foot">
+    <div class="setting">
+      <h3>Comfort settings</h3>
+      <div style="margin-bottom:16px;">
+        <div style="font-size:.9rem;color:var(--soft);margin-bottom:8px;">Text size</div>
+        <div class="seg" role="group" aria-label="Text size">
+          <button id="txtN" aria-pressed="true">Normal</button>
+          <button id="txtL" aria-pressed="false">Larger</button>
+        </div>
+      </div>
+      <div class="rate-row">
+        <label for="rate">Read-aloud speed</label>
+        <input type="range" id="rate" min="0.6" max="1.1" step="0.05" value="0.85">
+      </div>
+    </div>
+    <button class="linkbtn" data-go="sources"><span><b>Where these voices live</b><span>The communities behind every word</span></span><span class="arr">›</span></button>
+  </div>
+</section>
+
+<!-- ============ MOOD SCREENS ============ -->
+<section class="screen" id="s-laugh">
+  <div class="topbar"><div class="eyebrow" style="color:var(--laugh)">Ha. Good One.</div><h1 class="screen-title">What's going on?</h1></div>
+  <p class="lead">Pick what's bugging you. The bold ones are filled in so far.</p>
+  <div class="topics" id="grid-laugh"></div>
+  <div class="reader theme-laugh" id="reader-laugh"></div>
+</section>
+
+<section class="screen" id="s-lift">
+  <div class="topbar"><div class="eyebrow" style="color:var(--lift)">Time for a Lift</div><h1 class="screen-title">What's going on?</h1></div>
+  <p class="lead">A bit of hope, aimed at whatever's heavy right now.</p>
+  <div class="topics" id="grid-lift"></div>
+  <div class="reader theme-lift" id="reader-lift"></div>
+</section>
+
+<section class="screen" id="s-sit">
+  <div class="topbar"><div class="eyebrow" style="color:var(--sit)">Sit With Me</div><h1 class="screen-title">What's going on?</h1></div>
+  <p class="lead">No fixing. Just somewhere that gets it.</p>
+  <div class="topics" id="grid-sit"></div>
+  <div class="reader theme-sit" id="reader-sit"></div>
+</section>
+
+<!-- ============ BREATHE ============ -->
+<section class="screen" id="s-breathe">
+  <div class="topbar"><div class="eyebrow" style="color:var(--breathe)">Just Breathe</div><h1 class="screen-title">Two quiet minutes</h1></div>
+
+  <div class="practiced">These aren't a fringe thing. Meditation and guided imagery are used every day by people in chemoradiation — for nausea, fear, and sleepless nights — and they're <b>backed by real research and offered inside major cancer centers</b>. This is an ordinary, proven tool. You're in good company using it.</div>
+
+  <div class="section-h">How long do you have?</div>
+  <div class="pickrow"><button class="pick">2 min</button><button class="pick">5 min</button><button class="pick">10 min</button><button class="pick">Longer</button></div>
+  <div class="section-h">Or, what's going on?</div>
+  <div class="pickrow"><button class="pick">The Green Wave</button><button class="pick">Fear &amp; 3am</button><button class="pick">Can't sleep</button><button class="pick">Tension</button><button class="pick">Just need quiet</button></div>
+
+  <div class="section-h">Right here, right now</div>
+  <div class="guide">
+    <h3>A breath, lying down</h3>
+    <div class="dur">About 2 minutes · no need to sit up</div>
+    <p>You don't have to move. Wherever you are is fine. Let your eyes close, or just let them go soft toward something still.</p>
+    <p>Find your breath without changing it. Just notice it arriving, and leaving.</p>
+    <p>Now let the next breath in be a little slower — in, two, three, four. And out, slower still — out, two, three, four, five, six.</p>
+    <p>If your mind wanders, that isn't a mistake. Just come back to the next breath. The queasiness, the noise, the fear — let it be here. You're only breathing alongside it.</p>
+    <p>A few more, your own pace. In, gently. Out, longer. When you're ready, let your breath find its own rhythm again. You did the whole thing. That counts.</p>
+    <button class="speakbtn" id="breathSpeak"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M16 9a4 4 0 0 1 0 6"/></svg><span>Read this to me</span></button>
+  </div>
+
+  <div class="section-h">Free, and used by patients everywhere</div>
+  <a class="res" href="https://www.mskcc.org/cancer-care/diagnosis-treatment/symptom-management/integrative-medicine/multimedia/meditations" target="_blank" rel="noopener"><span><b>Memorial Sloan Kettering library</b> <span class="freebadge">FREE</span><span>Many styles &amp; lengths, made for cancer</span></span><span class="arr">›</span></a>
+  <a class="res" href="https://www.cancersupportcommunity.org/blog/how-can-meditation-help-after-cancer-diagnosis" target="_blank" rel="noopener"><span><b>Cancer Support Community</b> <span class="freebadge">FREE</span><span>Short guided videos, "inhale healing"</span></span><span class="arr">›</span></a>
+  <a class="res" href="https://www.cancercare.org/meditation-exercises" target="_blank" rel="noopener"><span><b>CancerCare meditations</b> <span class="freebadge">FREE</span><span>Walking, muscle relaxation, mindfulness</span></span><span class="arr">›</span></a>
+  <a class="res" href="https://www.tarabrach.com/guided-meditations/" target="_blank" rel="noopener"><span><b>Tara Brach</b> <span class="freebadge">FREE</span><span>Self-compassion, acceptance, fear</span></span><span class="arr">›</span></a>
+  <a class="res" href="https://www.ucsfhealth.org/services/meditation-and-guided-imagery-for-cancer-patients" target="_blank" rel="noopener"><span><b>UCSF Osher Center</b> <span class="freebadge">FREE</span><span>Recordings + free Tuesday classes</span></span><span class="arr">›</span></a>
+
+  <div class="section-h">Apps — free to start</div>
+  <a class="res" href="https://insighttimer.com" target="_blank" rel="noopener"><span><b>Insight Timer</b> <span class="freebadge">FREE</span><span>Biggest free library · filter by length</span></span><span class="arr">›</span></a>
+  <a class="res" href="https://www.calm.com" target="_blank" rel="noopener"><span><b>Calm</b><span>Most studied for colorectal patients · sleep</span></span><span class="arr">›</span></a>
+  <a class="res" href="https://www.headspace.com" target="_blank" rel="noopener"><span><b>Headspace</b><span>Has "SOS" sessions for panic moments</span></span><span class="arr">›</span></a>
+  <a class="res" href="https://hallow.com" target="_blank" rel="noopener"><span><b>Hallow</b><span>Faith-based prayer &amp; meditation</span></span><span class="arr">›</span></a>
+</section>
+
+<!-- ============ SOURCES ============ -->
+<section class="screen" id="s-sources">
+  <div class="topbar"><div class="eyebrow" style="color:var(--home)">The voices</div><h1 class="screen-title">Where these live</h1></div>
+  <p class="lead">Real people, real communities. Everything here is reworded with care — tap any name to go find them yourself.</p>
+  <div class="section-h">Colorectal cancer, specifically</div>
+  <a class="res" href="https://csn.cancer.org" target="_blank" rel="noopener"><span><b>Cancer Survivors Network</b><span>The American Cancer Society's open forum</span></span><span class="arr">›</span></a>
+  <a class="res" href="https://colorectalcancer.org" target="_blank" rel="noopener"><span><b>Colorectal Cancer Alliance</b><span>Community, blog, and support</span></span><span class="arr">›</span></a>
+  <a class="res" href="https://learn.colontown.org" target="_blank" rel="noopener"><span><b>ColonTown University</b><span>Free, public, by patients for patients</span></span><span class="arr">›</span></a>
+  <a class="res" href="https://www.inspire.com" target="_blank" rel="noopener"><span><b>Inspire</b><span>Open colorectal cancer groups</span></span><span class="arr">›</span></a>
+  <div class="section-h">All cancers</div>
+  <a class="res" href="https://connect.mayoclinic.org" target="_blank" rel="noopener"><span><b>Mayo Clinic Connect</b><span>Open, searchable patient community</span></span><span class="arr">›</span></a>
+  <a class="res" href="https://community.macmillan.org.uk" target="_blank" rel="noopener"><span><b>Macmillan Cancer Support</b><span>Warm, candid UK forums</span></span><span class="arr">›</span></a>
+  <a class="res" href="https://healthunlocked.com" target="_blank" rel="noopener"><span><b>HealthUnlocked</b><span>Patient communities incl. SHARE</span></span><span class="arr">›</span></a>
+  <div class="section-h">Frank talk &amp; gallows humor</div>
+  <a class="res" href="https://www.reddit.com/r/coloncancer/" target="_blank" rel="noopener"><span><b>Reddit · r/coloncancer</b><span>Honest, unfiltered, often funny</span></span><span class="arr">›</span></a>
+  <a class="res" href="https://www.reddit.com/r/cancer/" target="_blank" rel="noopener"><span><b>Reddit · r/cancer</b><span>The 3am thoughts live here too</span></span><span class="arr">›</span></a>
+</section>
+
+<!-- ============ TAB BAR ============ -->
+<nav class="tabbar">
+  <button class="tab" data-k="home" data-active="true" data-go="home"><svg viewBox="0 0 24 24"><path d="M4 11.5 12 4l8 7.5"/><path d="M6 10v9h12v-9"/></svg><span class="lbl">Home</span></button>
+  <button class="tab" data-k="laugh" data-go="laugh"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 14c1 1.5 2.5 2 4 2s3-.5 4-2"/><path d="M9 9h.01M15 9h.01"/></svg><span class="lbl">Ha.<br>Good One.</span></button>
+  <button class="tab" data-k="lift" data-go="lift"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.2 5.2l1.4 1.4M17.4 17.4l1.4 1.4M18.8 5.2l-1.4 1.4M6.6 17.4l-1.4 1.4"/></svg><span class="lbl">Time for<br>a Lift</span></button>
+  <button class="tab" data-k="sit" data-go="sit"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-9-9.2C1.8 7.7 3.6 5 6.4 5 8.3 5 9.7 6.2 12 8.7 14.3 6.2 15.7 5 17.6 5c2.8 0 4.6 2.7 3.4 5.8C19 15.6 12 20 12 20z"/></svg><span class="lbl">Sit<br>With Me</span></button>
+  <button class="tab" data-k="breathe" data-go="breathe"><svg viewBox="0 0 24 24"><path d="M3 9h11a3 3 0 1 0-3-3"/><path d="M3 14h15a3 3 0 1 1-3 3"/></svg><span class="lbl">Just<br>Breathe</span></button>
+</nav>
+
+<script>
+/* ---------------- Content ---------------- */
+const TOPICS = [
+  ["green","The Green Wave"],["empty","Running on Empty"],["potty","Potty Stuff"],
+  ["skin","Ouch. Right There."],["food","Food. Ugh. Food."],["club","The 3am Club"],
+  ["done","Done. Just Done."],["who","Who Even Is This?"],["people","Your People"],
+  ["routine","The Routine That Isn't"],["almost","Almost There. Really."],
+  ["big","The Bigger Picture"],["good","The Good Stuff"],["life","Just Life"]
+];
+function topicName(id){ const t=TOPICS.find(x=>x[0]===id); return t?t[1]:id; }
+const SRC = {
+  csn:["Cancer Survivors Network","https://csn.cancer.org"],
+  rc:["Reddit · r/cancer","https://www.reddit.com/r/cancer/"],
+  rcc:["Reddit · r/coloncancer","https://www.reddit.com/r/coloncancer/"],
+  mac:["Macmillan community","https://community.macmillan.org.uk"],
+  mayo:["Mayo Clinic Connect","https://connect.mayoclinic.org"],
+  ins:["Inspire","https://www.inspire.com"]
+};
+function p(text, s){ return {text, s}; }
+
+const CONTENT = { laugh:{}, lift:{}, sit:{} };
+
+/* ----- THE GREEN WAVE ----- */
+CONTENT.laugh.green=[
+  p("You used to like ginger. Past tense. After the tea, the chews, the candied bits and the flat ginger ale, your body now treats the word \u201cginger\u201d as a personal threat.","csn"),
+  p("Cancer handed you a superpower nobody asked for: you can detect a neighbor microwaving fish three doors down, through a closed window, while asleep.","rc"),
+  p("The anti-nausea pill calms the nausea and stops your bowels. The treatment unstops them. Your insides are two committees that flatly refuse to schedule a joint meeting.","rcc"),
+  p("\u201cWhat sounds good to eat?\u201d is a trick question. The only safe answer is one dry cracker, eaten lying down, lights low, like a tiny solemn ceremony.","mac"),
+  p("You have memorized the exact distance from couch to bathroom. Optimized the route. Rehearsed it. You could run it in the dark. You have run it in the dark.","ins"),
+  p("Cold food smells less, so you've become a person who eats things straight from the fridge at undignified angles \u2014 and honestly, no notes. No regrets.","csn"),
+  p("The nausea isn't even dramatic about it. No warning. It just sits there like a houseguest who won't leave, occasionally clearing its throat to remind you it's still around.","rc"),
+  p("Everyone has the one trick that cured their cousin. You'll try the lemon, the wristband, the peppermint, the sniff-the-alcohol-pad. You now own a small museum of other people's certainty.","mayo"),
+  p("Between waves you announce \u201cI'm fine!\u201d with such conviction that visitors relax \u2014 right up until you stand and leave the room at a speed that answers their next question for them.","mac")
+];
+CONTENT.lift.green=[
+  p("Someone who finished this exact treatment wants you to know: a morning comes when you forget to dread breakfast. It sneaks up on you. Food is just food again.","csn"),
+  p("It's temporary. Miserable, yes \u2014 but this particular awful has an end date stamped on it, even when you can't read the stamp from where you're lying.","rcc"),
+  p("On the worst days, \u201cI kept water down\u201d is a real win. Count it. Out loud if you have to. Small wins still count, and they stack up where you can't see them.","mac"),
+  p("People who came out the other side say it helped to picture the queasiness as the treatment doing loud, inconvenient work \u2014 effort, not damage.","ins"),
+  p("You'll be a little amazed, later, at how much airtime nausea got \u2014 because \u201clater\u201d will exist, and you'll be standing in it, annoyed about something completely ordinary.","rc")
+];
+CONTENT.sit.green=[
+  p("This is genuinely miserable, and you are not being dramatic. Nausea wears a person down in a way that's almost impossible to explain to anyone who hasn't lived in it.","csn"),
+  p("You don't have to be productive today. You don't have to be grateful today. You can just be a person who feels sick, lying down, getting through one afternoon.","rc"),
+  p("No fixing here. No tricks. Just \u2014 yes, this is hard, and you're allowed to hate it, and you don't owe anyone a brave face right now.","mac"),
+  p("Plenty of people have lain exactly where you're lying, feeling exactly this, watching exactly this ceiling. You're in quiet company, even on a gray afternoon.","ins"),
+  p("Breathe. That's the whole assignment. In, and out. The wave rises and the wave falls, and it isn't asking you to do anything but let it pass through.","rcc")
+];
+
+/* ----- POTTY STUFF ----- */
+CONTENT.laugh.potty=[
+  p("The great betrayal: you can no longer trust a fart. Not one. Every single one now requires a full risk assessment, and the intelligence is frequently, catastrophically wrong.","rcc"),
+  p("You've developed a relationship with your bathroom usually reserved for old friends. You know its moods. It knows yours. You've logged more quality time in there this month than with most humans.","csn"),
+  p("Radiation turned \u201cI'll just be a minute\u201d into a phrase you say with absolutely no idea if it's true. A minute. An hour. A lifestyle. Who's to say.","rc"),
+  p("Urgency has rewritten your entire understanding of geography. You now map every outing by bathroom proximity. Restaurants are rated on it. So, quietly, are friends' houses.","mac"),
+  p("There's a special bond among people who've had to locate a bathroom in a strange place at speed. You're now a member of this club. There's no newsletter. You just know.","rcc"),
+  p("You've made peace with the fact that \u201cHow are you?\u201d and \u201cHow are your bowels?\u201d are, for now, basically the same question \u2014 and the people who love you ask both.","ins"),
+  p("Sitz baths: the most undignified spa experience of your life, and somehow also a highlight of the day. You did not make these rules.","csn"),
+  p("Nobody warns you that you'll become a person who narrates bowel movements to medical professionals with the calm precision of a seasoned sports commentator.","mayo")
+];
+CONTENT.lift.potty=[
+  p("The bowel stuff is loud and humbling right now, and people who finished promise it settles down. Your body is stubborn \u2014 it's healing in there even while it misbehaves.","csn"),
+  p("Someone years out wants you to know: you will, eventually, trust a fart again. It's a low bar and a genuine milestone at the same time, and you'll clear it.","rcc"),
+  p("Every miserable trip to the bathroom is the treatment working in exactly the place it's meant to. Awful, yes. Pointless, no.","ins"),
+  p("You are handling, with a mostly straight face, things you'd have found unthinkable a few months ago. That's not nothing. That's a quiet, unglamorous kind of tough.","mac")
+];
+CONTENT.sit.potty=[
+  p("This is the part nobody talks about, and it's brutal partly because nobody talks about it. You're not gross. You're not failing. Your body is in a hard, raw stretch.","csn"),
+  p("There's no dignity to find in some of this, and you don't have to pretend there is. You're allowed to just call it miserable and undignified and deeply unfair.","mac"),
+  p("Accidents happen. They are not a moral event. They're plumbing under construction. Be as gentle with yourself as you'd be with anyone else living through it.","rcc"),
+  p("You're allowed to grieve the ordinary, private, taken-for-granted things. Wanting your old uncomplicated body back isn't ingratitude. It's just human.","rc")
+];
+
+/* ----- OUCH. RIGHT THERE. ----- */
+CONTENT.laugh.skin=[
+  p("Your feet have filed a formal grievance with management. The complaint: walking. The proposed resolution: never again. They have, frankly, a strong case.","rcc"),
+  p("You now own more tubes of cream than a small pharmacy, and you've developed strong, unshakeable opinions about urea percentages that you'll share with anyone who stands still long enough.","csn"),
+  p("Bag Balm: a product invented for cow udders, now the most important relationship in your life. You don't question it. You just reapply, with gratitude.","mac"),
+  p("You've started wearing cotton gloves and socks to bed like a genteel Victorian ghost \u2014 except this ghost is also slathered in ointment and faintly resentful about it.","rc"),
+  p("Hand-foot syndrome: the only condition where \u201cI've literally just been sitting on the couch\u201d and \u201cmy feet are on fire\u201d are both completely true at the same time.","ins")
+];
+CONTENT.lift.skin=[
+  p("People who finished say the skin heals and the feet calm down once treatment eases. Your hands won't be angry forever \u2014 this is a chapter, not the whole book.","csn"),
+  p("Someone years out wants you to know they eventually forgot which fingers used to hurt. The body is quietly forgiving, once you give it the room to be.","ins"),
+  p("Every tender patch is skin that's been on the front line of something hard. Be gentle with it \u2014 it's been working for you, not against you.","mac")
+];
+CONTENT.sit.skin=[
+  p("It's a strange, specific misery \u2014 sore in the places you use for everything, all day, with no dramatic injury to point at. It's real even when no one else can see it.","csn"),
+  p("You're allowed to go slow. Open the jar later. Ask for the hand. Tender skin is a real reason to be gentle with yourself, not something to grit through.","mac"),
+  p("No one can see this one, which makes it lonelier. But it's there, and it hurts, and you are not making it up or making too much of it.","rc")
+];
+
+/* ----- FOOD. UGH. FOOD. ----- */
+CONTENT.laugh.food=[
+  p("Cooking shows have quietly become a horror genre. That glistening roast? Absolutely not. How dare it. Turn it off. Turn it off now.","rc"),
+  p("Your relationship with food has the exact energy of a bad breakup. You used to love each other. Now you can't be in the same room without one of you getting upset.","rcc"),
+  p("Everything tastes like either cardboard, metal, or betrayal. Occasionally all three at once. Truly, chefs hate this one weird side effect.","csn"),
+  p("You've eaten the same three safe foods for two weeks straight, and you'd be embarrassed if you had the energy to care, which you very much do not.","mac"),
+  p("Well-meaning people keep presenting rich, fragrant, lovingly-made meals, and your body greets each one as if it has been personally and gravely insulted.","ins")
+];
+CONTENT.lift.food=[
+  p("Taste comes back. People who finished describe the day a real meal tasted right again like a small private fireworks display. It's coming for you too.","csn"),
+  p("Right now, eating is just fuel, and that's allowed. People who came through say: lower the bar, eat the bland safe thing, and don't turn it into a moral test.","ins"),
+  p("A few bites is a genuine win on a hard day. You're keeping yourself going, and that's the only job food has to do this week.","mac")
+];
+CONTENT.sit.food=[
+  p("Food is supposed to be one of life's easy pleasures, and right now it's a chore and a battle. Grieving that is fair. You lost something real, even if it's temporary.","csn"),
+  p("You don't have to clean the plate. You don't have to be grateful for the meal someone made. You can eat three bites and stop, and that is completely okay.","mac"),
+  p("There's a particular loneliness in not being able to share a meal the way you used to. It's a quiet grief, and it counts.","rc")
+];
+
+/* ----- THE 3AM CLUB ----- */
+CONTENT.laugh.club=[
+  p("3am: the hour your brain hosts a film festival of every worst-case scenario, in crisp HD, no exits, and a surprisingly generous special-effects budget.","rc"),
+  p("Your mind at 2am has done more \u201cresearch\u201d than your entire medical team, reached far darker conclusions, and holds exactly zero credentials.","rcc"),
+  p("Scanxiety: the elite sport of feeling completely fine right up until the second a scan is mentioned, at which point your nervous system files for early retirement.","csn"),
+  p("You've searched things at 3am you'd never say aloud in daylight, and the internet, as ever, replied: \u201ccould be nothing, could be the end of days, who can say.\u201d","mac"),
+  p("The waiting room before results runs on its own physics, where time moves backward and every random cough suddenly sounds deeply diagnostic.","ins")
+];
+CONTENT.lift.club=[
+  p("People who've done a dozen scans say the dread shrinks. Not gone \u2014 but it stops eating the whole week. You learn to keep it in a smaller box.","csn"),
+  p("The 3am brain is a liar with excellent production values. Morning-you is far more reliable. Try to defer the big verdicts until the sun is actually up.","rc"),
+  p("Someone years past treatment wants you to know: most of the catastrophes you rehearse at 3am simply never show up. The mind bills you in advance for disasters it rarely delivers.","ins"),
+  p("You have survived 100% of your worst nights so far. That's a terrible record to bet against.","rcc")
+];
+CONTENT.sit.club=[
+  p("Of course you're scared. Anyone would be. Fear isn't a failure of positivity \u2014 it's the completely sane response to something genuinely frightening.","csn"),
+  p("You don't have to talk yourself out of the fear right now. You can just let it sit beside you. It doesn't need to be fixed to be survivable.","mac"),
+  p("The 3am hours are long and lonely, and right now, somewhere, someone else is awake with the same ceiling and the same thoughts. You're less alone in it than it feels.","ins"),
+  p("You don't have to be brave at 3am. Bravery is a daytime job. At 3am you only have to make it to 4am, and then to the light.","rc")
+];
+
+/* ----- DONE. JUST DONE. ----- */
+CONTENT.laugh.done=[
+  p("Some days the only honest status update is a long exhale and a flat \u201cnope.\u201d That's a complete sentence. It's allowed to be the entire report.","rc"),
+  p("You've hit the part where even the cheery posters in the clinic are testing your patience. \u201cHang in there!\u201d Absolutely not. Not today.","rcc"),
+  p("Today's mood: if one more person says \u201cyou've got this,\u201d you're going to find out precisely what \u201cthis\u201d is and politely hand it right back.","csn")
+];
+CONTENT.lift.done=[
+  p("Done days aren't the end. They're a Tuesday. People who finished had stacks of \u201cI can't do this anymore\u201d days, and then somehow did the next one anyway.","csn"),
+  p("You're allowed to be completely over it and still be doing it. Those two things live together just fine. Hating it doesn't mean you're losing.","ins"),
+  p("Someone on the far side wants you to know the \u201cdone\u201d feeling is not a verdict on how this ends. It's just a hard day talking, and hard days end.","rcc")
+];
+CONTENT.sit.done=[
+  p("Being done is fair. You didn't sign up for this, and you've been carrying it a long time. Of course you're sick of it. Anyone would be.","csn"),
+  p("You don't have to rally right now. You don't have to find the silver lining. You can be exactly this done, and that is a complete and acceptable place to be today.","mac"),
+  p("No pep talk here. Just: this is a lot, you've been at it a while, and it's okay to set it all down for one afternoon and simply be tired of it.","rc"),
+  p("You don't owe anyone your resilience today. Some days, getting through is the whole accomplishment \u2014 and \u201cstill here, and furious about it\u201d absolutely counts.","ins")
+];
+
+/* ----- WHO EVEN IS THIS? ----- */
+CONTENT.laugh.who=[
+  p("You caught your reflection and did a genuine double-take, like spotting an acquaintance you couldn't quite place. \u201cOh. It's\u2026 me. Right. Hello, you.\u201d","rc"),
+  p("Your body has become a group project run mostly by strangers \u2014 scans, schedules, people you met twenty minutes ago who know things about your insides that you don't.","rcc"),
+  p("You've been examined, prodded, scanned and discussed so thoroughly that modesty quietly packed a bag and left weeks ago, leaving only a forwarding address.","csn"),
+  p("The hospital gown: apparently designed by someone who has never met a human body, has no wish to, and is making that abundantly clear with every gap.","mac")
+];
+CONTENT.lift.who=[
+  p("This body is doing something fierce right now, even when it doesn't look or feel like yours. People who came through made their peace \u2014 and some ended up oddly proud of it.","csn"),
+  p("You are still entirely in there. The treatment changes the packaging, not the person. The people who love you have never once lost sight of who you actually are.","mac"),
+  p("Someone years out wants you to know it does start feeling like yours again. Slowly, the stranger in the mirror turns back into you.","ins")
+];
+CONTENT.sit.who=[
+  p("It's disorienting to live in a body that suddenly feels borrowed. You're not vain or shallow for grieving how it's changed \u2014 you're human, and it's a real loss.","csn"),
+  p("You don't have to make peace with it today. You're allowed to feel like a stranger to yourself, and just sit with how strange and hard that is.","mac"),
+  p("So much of this strips away privacy and control. Wanting to feel like you again isn't too much to ask. It's the most natural thing in the world.","rc")
+];
+
+/* ----- YOUR PEOPLE ----- */
+CONTENT.laugh.people=[
+  p("Someone will say \u201clet me know if you need anything,\u201d and mean it sincerely, while you stand there holding seventeen invisible needs and the total inability to name a single one.","csn"),
+  p("The unsolicited cures arrive like clockwork. Yes, thank you, you'll look into the celery juice, the apricot pits, the cousin's friend's miracle tea. You're collecting them now. It's a hobby.","rcc"),
+  p("Someone's aunt beat cancer through sheer positive thinking, apparently, and this is being shared with you as though you simply hadn't thought to try.","mac"),
+  p("There's always one person who gets quietly competitive about who is more worried about you. You'd let them win, but you're far too tired to hand over the trophy.","rc"),
+  p("People you barely know now hug you with alarming intensity, while you pat their back going \u201cthere, there\u201d \u2014 comforting them, about your own cancer.","ins")
+];
+CONTENT.lift.people=[
+  p("The ones who really show up \u2014 who drive you, sit in the silence, bring the soup, answer at 3am \u2014 are telling you exactly who they are. Hold them close. That's the gold.","csn"),
+  p("People who came through say cancer sorted their relationships with brutal clarity, and what was left was realer and warmer than before. Your true people are showing themselves now.","ins"),
+  p("Letting people help is its own kind of gift \u2014 to them. They feel helpless too, and a real task to do is a mercy. You're not a burden; you're handing them a way to love you.","mac")
+];
+CONTENT.sit.people=[
+  p("It's complicated \u2014 the love and the exhaustion of being cared for, the gratitude and the wanting to be left alone, all at once. You can feel every bit of it. None of it makes you ungrateful.","csn"),
+  p("Some people will let you down. They'll vanish, or say the wrong thing, or make it about themselves. That's allowed to hurt, and it is not your job to manage their discomfort right now.","mac"),
+  p("You don't have to perform being okay for the people who love you. Sometimes the bravest thing is letting them see you not okay, and trusting them to stay.","rc")
+];
+
+/* ---------------- Favorites store ---------------- */
+function hash(s){ let h=5381; for(let i=0;i<s.length;i++){ h=((h<<5)+h)+s.charCodeAt(i); h|=0; } return (h>>>0).toString(36); }
+function favKey(mood,tid,text){ return mood+'|'+tid+'|'+hash(text); }
+const PIECEMAP={};
+for(const mood in CONTENT){ for(const tid in CONTENT[mood]){ CONTENT[mood][tid].forEach(it=>{ const k=favKey(mood,tid,it.text); PIECEMAP[k]={text:it.text, s:it.s, mood, topic:tid, name:topicName(tid), k}; }); } }
+
+let favs=[];
+try{ favs=JSON.parse(localStorage.getItem('kpr_favs')||'[]'); if(!Array.isArray(favs)) favs=[]; }catch(e){ favs=[]; }
+function saveFavs(){ try{ localStorage.setItem('kpr_favs', JSON.stringify(favs)); }catch(e){} }
+function isFav(k){ return favs.indexOf(k)>-1; }
+function toggleFav(k){
+  const i=favs.indexOf(k);
+  if(i>-1){ favs.splice(i,1); } else { favs.push(k); }
+  saveFavs();
+  document.querySelectorAll('.act.heart[data-k="'+k+'"]').forEach(b=>b.classList.toggle('on', isFav(k)));
+  renderYours();
+}
+
+/* ---------------- Piece rendering ---------------- */
+function pieceInner(item, k){
+  const src=SRC[item.s]; const faved=isFav(k);
+  return '<div class="body">'+item.text+'</div>'+
+    '<div class="piece-foot"><div class="src">from <a href="'+src[1]+'" target="_blank" rel="noopener">'+src[0]+'</a></div>'+
+    '<div class="acts">'+
+      '<button class="act heart'+(faved?' on':'')+'" data-k="'+k+'" aria-label="Save this"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.4-9-9.2C1.8 8.7 3.6 6 6.4 6 8.3 6 9.7 7.2 12 9.7 14.3 7.2 15.7 6 17.6 6c2.8 0 4.6 2.7 3.4 5.8C19 16.6 12 21 12 21z"/></svg></button>'+
+      '<button class="act speak" data-k="'+k+'" aria-label="Read aloud"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M16 9a4 4 0 0 1 0 6"/></svg></button>'+
+    '</div></div>';
+}
+function bindActions(container){
+  container.querySelectorAll('.act.heart').forEach(b=>{
+    b.addEventListener('click',()=>toggleFav(b.dataset.k));
+  });
+  container.querySelectorAll('.act.speak').forEach(b=>{
+    b.addEventListener('click',()=>{ const it=PIECEMAP[b.dataset.k]; if(it) toggleSpeak(it.text,b); });
+  });
+}
+
+/* ---------------- Yours section ---------------- */
+function renderYours(){
+  const wrap=document.getElementById('yoursList');
+  const items=favs.map(k=>PIECEMAP[k]).filter(Boolean);
+  if(!items.length){
+    wrap.innerHTML='<div class="yours-empty">Nothing saved yet. When something lands \u2014 a laugh, a line that helps \u2014 tap its <span style="color:var(--heart)">\u2665</span> and it\u2019ll wait for you right here.</div>';
+    return;
+  }
+  wrap.innerHTML=items.map(it=>'<div class="ycard">'+pieceInner(it, it.k)+'</div>').join('');
+  bindActions(wrap);
+}
+
+/* ---------------- Navigation ---------------- */
+const screens={ home:'s-home', laugh:'s-laugh', lift:'s-lift', sit:'s-sit', breathe:'s-breathe', sources:'s-sources' };
+function show(key){
+  Object.values(screens).forEach(id=>document.getElementById(id).classList.remove('active'));
+  document.getElementById(screens[key]||'s-home').classList.add('active');
+  document.querySelectorAll('.tab').forEach(t=>t.setAttribute('data-active', t.dataset.go===key?'true':'false'));
+  if(['home','sources'].includes(key)){ document.querySelector('.tab[data-k="home"]').setAttribute('data-active','true'); }
+  window.scrollTo(0,0); stopSpeak();
+}
+document.querySelectorAll('[data-go]').forEach(el=>{
+  el.addEventListener('click',()=>{ const k=el.dataset.go; if(['laugh','lift','sit'].includes(k)){ resetReader(k); } show(k); });
+});
+
+/* ---------------- Topic grids ---------------- */
+function buildGrid(mood){
+  const grid=document.getElementById('grid-'+mood); grid.innerHTML='';
+  TOPICS.forEach(([id,name])=>{
+    const has=CONTENT[mood] && CONTENT[mood][id] && CONTENT[mood][id].length;
+    const b=document.createElement('button');
+    b.className='topic'+(has?' ready':'');
+    b.innerHTML=(has?'<span class="dot"></span>':'')+'<span class="name">'+name+'</span>';
+    b.addEventListener('click',()=>openTopic(mood,id,name));
+    grid.appendChild(b);
+  });
+  const sb=document.createElement('button');
+  sb.className='topic wide ready';
+  sb.innerHTML='<span class="name">Just Take Me Somewhere ›</span>';
+  sb.addEventListener('click',()=>surprise(mood));
+  grid.appendChild(sb);
+}
+['laugh','lift','sit'].forEach(buildGrid);
+
+function resetReader(mood){
+  if(!['laugh','lift','sit'].includes(mood)) return;
+  document.getElementById('grid-'+mood).style.display='';
+  const r=document.getElementById('reader-'+mood); r.classList.remove('active'); r.innerHTML='';
+  document.querySelector('#s-'+mood+' .lead').style.display='';
+}
+
+let reader={mood:null,list:[],i:0,name:'',tid:''};
+function openTopic(mood,id,name){
+  const list=(CONTENT[mood]&&CONTENT[mood][id])?CONTENT[mood][id]:[];
+  document.getElementById('grid-'+mood).style.display='none';
+  document.querySelector('#s-'+mood+' .lead').style.display='none';
+  const r=document.getElementById('reader-'+mood); r.classList.add('active');
+  if(!list.length){
+    r.innerHTML='<button class="back">‹ back</button><div class="placeholder"><span class="serif">'+name+'</span>This one\u2019s still being gathered with care. It\u2019s coming soon \u2014 promise.</div>';
+    r.querySelector('.back').addEventListener('click',()=>resetReader(mood));
+    return;
+  }
+  reader={mood,list,i:0,name,tid:id}; renderPiece();
+}
+function renderPiece(){
+  const {mood,list,i,name,tid}=reader; const item=list[i]; const k=favKey(mood,tid,item.text);
+  const r=document.getElementById('reader-'+mood);
+  r.innerHTML='<button class="back">\u2039 '+name+'</button>'+
+    '<div class="piece '+mood+'">'+pieceInner(item,k)+'</div>'+
+    '<button class="another a-'+mood+'">Show me another</button>'+
+    '<div class="counter">'+(i+1)+' of '+list.length+'</div>'+
+    '<div class="note">Reworded with care from the kinds of things rectal &amp; colorectal patients share. Tap the name to visit that community.</div>';
+  r.querySelector('.back').addEventListener('click',()=>resetReader(mood));
+  r.querySelector('.another').addEventListener('click',()=>{ reader.i=(i+1)%list.length; renderPiece(); });
+  bindActions(r);
+}
+function surprise(mood){
+  const ids=Object.keys(CONTENT[mood]||{}).filter(k=>CONTENT[mood][k].length);
+  if(!ids.length) return;
+  const id=ids[Math.floor(Math.random()*ids.length)];
+  openTopic(mood,id,topicName(id));
+  reader.i=Math.floor(Math.random()*reader.list.length); renderPiece();
+}
+
+/* ---------------- Speech ---------------- */
+let speaking=false, curBtn=null;
+function rate(){ return parseFloat(document.getElementById('rate').value)||0.85; }
+function stopSpeak(){
+  if(window.speechSynthesis){ window.speechSynthesis.cancel(); }
+  speaking=false;
+  if(curBtn){ curBtn.classList.remove('on'); curBtn=null; }
+  document.querySelectorAll('.speakbtn.on').forEach(b=>{ b.classList.remove('on'); b.querySelector('span').textContent='Read this to me'; });
+}
+function toggleSpeak(text, btn){
+  if(!('speechSynthesis' in window)) return;
+  if(speaking && curBtn===btn){ stopSpeak(); return; }
+  stopSpeak();
+  const u=new SpeechSynthesisUtterance(text.replace(/[\u201c\u201d]/g,'"').replace(/\u2014/g,', '));
+  u.rate=rate(); u.pitch=1; u.lang='en-US';
+  u.onend=()=>{ speaking=false; if(curBtn){curBtn.classList.remove('on');curBtn=null;} };
+  window.speechSynthesis.speak(u); speaking=true; curBtn=btn; btn.classList.add('on');
+}
+const bs=document.getElementById('breathSpeak');
+bs.addEventListener('click',()=>{
+  if(speaking && curBtn===bs){ stopSpeak(); return; }
+  stopSpeak();
+  const paras=[...document.querySelectorAll('#s-breathe .guide p')].map(p=>p.textContent).join(' ... ');
+  const u=new SpeechSynthesisUtterance(paras); u.rate=Math.min(rate(),0.8); u.lang='en-US';
+  u.onend=()=>{ speaking=false; bs.classList.remove('on'); bs.querySelector('span').textContent='Read this to me'; curBtn=null; };
+  window.speechSynthesis.speak(u); speaking=true; curBtn=bs; bs.classList.add('on'); bs.querySelector('span').textContent='Stop';
+});
+
+/* ---------------- Comfort settings ---------------- */
+const txtN=document.getElementById('txtN'), txtL=document.getElementById('txtL');
+txtN.addEventListener('click',()=>{ document.body.classList.remove('lg'); txtN.setAttribute('aria-pressed','true'); txtL.setAttribute('aria-pressed','false'); });
+txtL.addEventListener('click',()=>{ document.body.classList.add('lg'); txtL.setAttribute('aria-pressed','true'); txtN.setAttribute('aria-pressed','false'); });
+
+/* ---------------- Onboarding ---------------- */
+const onboard=document.getElementById('onboard');
+let seen=false; try{ seen=localStorage.getItem('kpr_seen')==='1'; }catch(e){}
+if(seen){ onboard.classList.add('gone'); }
+document.getElementById('obReady').addEventListener('click',()=>{
+  document.getElementById('obConfirm').hidden=false;
+  document.getElementById('obReady').style.display='none';
+  document.getElementById('obConfirm').scrollIntoView({behavior:'smooth', block:'center'});
+});
+document.getElementById('obAgain').addEventListener('click',()=>{
+  document.getElementById('obConfirm').hidden=true;
+  document.getElementById('obReady').style.display='block';
+  onboard.scrollTo({top:0, behavior:'smooth'});
+  document.getElementById('obBody').scrollIntoView({behavior:'smooth', block:'start'});
+});
+document.getElementById('obYes').addEventListener('click',()=>{
+  onboard.classList.add('gone');
+  try{ localStorage.setItem('kpr_seen','1'); }catch(e){}
+});
+
+/* iOS: prime speech on first touch */
+document.addEventListener('touchstart',function prime(){ if(window.speechSynthesis){ window.speechSynthesis.getVoices(); } document.removeEventListener('touchstart',prime); },{once:true});
+
+/* init */
+renderYours();
+</script>
+</body>
+</html>
