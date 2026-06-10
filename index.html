@@ -155,7 +155,12 @@
   .rate-row{ display:flex; align-items:center; gap:12px; }
   .rate-row label{ font-size:1rem; color:var(--soft); flex:0 0 auto; }
   input[type=range]{ flex:1; accent-color:var(--breathe); height:30px; }
-  .linkbtn{ display:flex; align-items:center; justify-content:space-between; width:100%; background:var(--card); border:1px solid var(--line); border-radius:18px; padding:17px 18px; font:inherit; color:var(--ink); cursor:pointer; text-align:left; }
+  .disclaimer{
+    background:var(--card); border:1px solid var(--line); border-radius:16px;
+    padding:16px 18px; margin:22px 0 8px;
+    font-size:.98rem; color:var(--soft); line-height:1.6;
+  }
+  .disclaimer b{ color:var(--ink); display:block; margin-bottom:4px; font-size:1rem; }
   .linkbtn .arr{ color:#C8BCAC; font-size:1.3rem; }
   .linkbtn span span{ display:block; font-size:.95rem; color:var(--soft); font-weight:400; margin-top:2px; }
 
@@ -381,6 +386,12 @@
         <input type="range" id="rate" min="0.6" max="1.1" step="0.05" value="0.85">
       </div>
     </div>
+    <div class="disclaimer">
+      <b>A few important things to know</b>
+      The voices in this tool are gathered and reworded from public patient and caregiver communities — they are personal experiences, not medical advice. Nothing here replaces the guidance of your care team. If you are in distress or have a medical concern, please contact your doctor or care team directly.<br><br>
+      This tool was conceived and created by a caregiver, built with the assistance of Claude AI by Anthropic. Content draws from public patient and caregiver communities and is occasionally updated as new voices are shared.<br><br>
+      This tool does not collect, store, or share any personal information. Your saved favorites stay only on your own device.
+    </div>
     <button class="linkbtn" data-go="sources"><span><b>Where these voices live</b><span>The communities behind every word</span></span><span class="arr">›</span></button>
   </div>
 </section>
@@ -448,7 +459,8 @@
 <!-- ============ SOURCES ============ -->
 <section class="screen" id="s-sources">
   <div class="topbar"><div class="eyebrow" style="color:var(--home)">The voices</div><h1 class="screen-title">Where these live</h1></div>
-  <p class="lead">Real people, real communities. Everything here is reworded with care — tap any name to go find them yourself.</p>
+  <p class="lead">Real people, real communities. Everything here is reworded with care — tap any name to go find them yourself. This collection grows over time; new voices are added as the community keeps sharing.</p>
+  <div class="practiced" style="margin-bottom:18px;">Conceived and created by a caregiver. Built with the assistance of <b>Claude AI by Anthropic</b>. The vision, the judgment, and the care behind every choice here are human.</div>
   <div class="section-h">Colorectal cancer, specifically</div>
   <a class="res" href="https://csn.cancer.org" target="_blank" rel="noopener"><span><b>Cancer Survivors Network</b><span>The American Cancer Society's open forum</span></span><span class="arr">›</span></a>
   <a class="res" href="https://colorectalcancer.org" target="_blank" rel="noopener"><span><b>Colorectal Cancer Alliance</b><span>Community, blog, and support</span></span><span class="arr">›</span></a>
@@ -976,7 +988,7 @@ function renderPiece(){
     '<div class="piece '+mood+'">'+pieceInner(item,k)+'</div>'+
     '<div class="nav-row">'+prevBtn+'<button class="another a-'+mood+' next-btn">Show me another</button></div>'+
     '<div class="counter">'+(i+1)+' of '+list.length+'</div>'+
-    '<div class="note">Reworded with care from the kinds of things rectal &amp; colorectal patients share. Tap the name to visit that community.</div>';
+    '<div class="note">These voices are gathered and reworded from public patient and caregiver communities. They are personal experiences, not medical advice. Tap the community name to visit the source.</div>';
   r.querySelector('.back').addEventListener('click',()=>resetReader(mood));
   r.querySelector('.next-btn').addEventListener('click',()=>{ reader.i=(i+1)%list.length; renderPiece(); });
   r.querySelector('.prev-btn').addEventListener('click',()=>{ if(i>0){ reader.i=i-1; renderPiece(); } });
