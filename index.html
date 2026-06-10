@@ -192,8 +192,10 @@
   .act.heart svg{ fill:none; stroke:#C9A9A9; stroke-width:1.7; }
   .act.heart.on{ background:#FBE9EE; border-color:#F3CBD6; }
   .act.heart.on svg{ fill:var(--heart); stroke:var(--heart); }
-  .another{ width:100%; border:none; border-radius:16px; padding:17px; font:inherit; font-weight:600; font-size:1.08rem; color:#fff; cursor:pointer; }
+  .another{ border:none; border-radius:16px; padding:17px; font:inherit; font-weight:600; font-size:1.08rem; color:#fff; cursor:pointer; }
   .another:active{ filter:brightness(.97); }
+  .nav-row{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:0; }
+  .nav-row .another{ width:100%; }
   .a-laugh{ background:var(--laugh); } .a-lift{ background:var(--lift); } .a-sit{ background:var(--sit); }
   .counter{ text-align:center; color:var(--soft); font-size:.95rem; margin-top:12px; }
   .note{ font-size:.95rem; color:var(--soft); font-style:italic; margin-top:20px; line-height:1.5; }
@@ -409,7 +411,7 @@
 <section class="screen" id="s-breathe">
   <div class="topbar"><div class="eyebrow" style="color:var(--breathe)">Just Breathe</div><h1 class="screen-title">Two quiet minutes</h1></div>
 
-  <div class="practiced">These aren't a fringe thing. Meditation and guided imagery are used every day by people in chemoradiation — for nausea, fear, and sleepless nights — and they're <b>backed by real research and offered inside major cancer centers</b>. This is an ordinary, proven tool. You're in good company using it.</div>
+  <div class="practiced">Meditation and guided imagery are used every day by people in chemoradiation — for nausea, fear, and sleepless nights — and they're <b>backed by real research and offered inside major cancer centers</b>. This is an ordinary, proven tool. You're in good company using it.</div>
 
   <div class="section-h">How long do you have?</div>
   <div class="pickrow" id="timeRow"><button class="pick">2 min</button><button class="pick">5 min</button><button class="pick">10 min</button><button class="pick">Longer</button></div>
@@ -967,13 +969,17 @@ function openTopic(mood,id,name){
 function renderPiece(){
   const {mood,list,i,name,tid}=reader; const item=list[i]; const k=favKey(mood,tid,item.text);
   const r=document.getElementById('reader-'+mood);
+  const prevBtn = i > 0
+    ? '<button class="another a-'+mood+' prev-btn">← Previous</button>'
+    : '<button class="another a-'+mood+' prev-btn" style="visibility:hidden">← Previous</button>';
   r.innerHTML='<button class="back">\u2039 '+name+'</button>'+
     '<div class="piece '+mood+'">'+pieceInner(item,k)+'</div>'+
-    '<button class="another a-'+mood+'">Show me another</button>'+
+    '<div class="nav-row">'+prevBtn+'<button class="another a-'+mood+' next-btn">Show me another</button></div>'+
     '<div class="counter">'+(i+1)+' of '+list.length+'</div>'+
     '<div class="note">Reworded with care from the kinds of things rectal &amp; colorectal patients share. Tap the name to visit that community.</div>';
   r.querySelector('.back').addEventListener('click',()=>resetReader(mood));
-  r.querySelector('.another').addEventListener('click',()=>{ reader.i=(i+1)%list.length; renderPiece(); });
+  r.querySelector('.next-btn').addEventListener('click',()=>{ reader.i=(i+1)%list.length; renderPiece(); });
+  r.querySelector('.prev-btn').addEventListener('click',()=>{ if(i>0){ reader.i=i-1; renderPiece(); } });
   bindActions(r);
 }
 function surprise(mood){
