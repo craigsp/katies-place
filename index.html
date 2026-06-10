@@ -26,16 +26,17 @@
 
     --tabbar:78px;
   }
-  body.lg{ --base:21px; }
 
   *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html{ font-size:18.5px; -webkit-text-size-adjust:100%; }
+  html.lg{ font-size:21.5px; }
   html,body{ margin:0; padding:0; height:100%; }
   body{
     background:var(--bg);
     color:var(--ink);
     font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;
-    font-size:var(--base);
-    line-height:1.6;
+    font-size:1rem;
+    line-height:1.62;
     -webkit-font-smoothing:antialiased;
     -webkit-text-size-adjust:100%;
     overscroll-behavior-y:none;
@@ -55,7 +56,8 @@
   }
   .onboard.gone{ display:none; }
   .ob-inner{ max-width:480px; text-align:center; }
-  .ob-emoji{ font-size:3.4rem; line-height:1; margin-bottom:10px; }
+  .ob-emoji{ line-height:0; margin-bottom:10px; }
+  .lotusico{ display:inline-block; height:auto; max-width:60vw; }
   .ob-title{ font-size:2.2rem; color:#5A3826; margin:0; line-height:1.15; }
   .ob-sub{ font-family:Georgia,serif; font-style:italic; color:#9A6A3A; margin:6px 0 22px; font-size:1.05rem; }
   .ob-body p{ font-size:1.16rem; line-height:1.65; color:#42352B; margin:0 0 16px; }
@@ -78,7 +80,7 @@
   @media (prefers-reduced-motion:reduce){ .screen,.onboard{ animation:none; } }
 
   .topbar{ padding:calc(env(safe-area-inset-top) + 14px) 0 6px; }
-  .eyebrow{ font-size:.8rem; letter-spacing:.08em; text-transform:uppercase; color:var(--soft); font-weight:600; }
+  .eyebrow{ font-size:.92rem; letter-spacing:.07em; text-transform:uppercase; color:var(--soft); font-weight:600; }
   .screen-title{ font-size:1.7rem; margin:2px 0 0; line-height:1.2; }
 
   /* ---------------- Home hero (Option E) ---------------- */
@@ -92,7 +94,7 @@
     filter:blur(20px);
   }
   .hero-content{ position:relative; z-index:1; }
-  .hero-emoji{ font-size:3rem; line-height:1; margin-bottom:4px; }
+  .hero-emoji{ line-height:0; margin-bottom:6px; }
   .hero-title{ font-size:2rem; color:#5A3826; margin:0; line-height:1.14; }
   .hero-sub{ font-family:Georgia,serif; font-style:italic; color:#9A6A3A; margin-top:5px; font-size:1.02rem; letter-spacing:.02em; }
 
@@ -112,7 +114,7 @@
     transition:transform .08s ease, filter .08s ease;
   }
   .mood:active{ transform:scale(.985); filter:brightness(.97); }
-  .mood small{ display:block; font-family:-apple-system,sans-serif; font-weight:400; font-size:.86rem; opacity:.92; margin-top:2px; }
+  .mood small{ display:block; font-family:-apple-system,sans-serif; font-weight:400; font-size:.95rem; opacity:.93; margin-top:3px; }
   .mood .mi{ flex:0 0 auto; width:34px; height:34px; }
   .mood.m-laugh{ background:var(--laugh); }
   .mood.m-lift{ background:var(--lift); }
@@ -122,7 +124,7 @@
   /* ---------------- Yours / favorites ---------------- */
   .yours{ margin:30px 0 6px; }
   .yours-h{ font-size:1.3rem; margin:0 0 4px; display:flex; align-items:center; gap:8px; }
-  .yours-note{ font-size:.84rem; color:var(--soft); font-style:italic; margin:0 0 14px; line-height:1.5; }
+  .yours-note{ font-size:.96rem; color:var(--soft); font-style:italic; margin:0 0 14px; line-height:1.55; }
   .yours-empty{
     background:var(--card); border:1px dashed var(--line); border-radius:18px;
     padding:24px 20px; text-align:center; color:var(--soft); line-height:1.55;
@@ -131,7 +133,7 @@
     background:var(--card); border:1px solid var(--line); border-radius:18px;
     padding:18px 18px 12px; margin-bottom:12px; box-shadow:0 1px 3px rgba(70,55,40,.05);
   }
-  .ycard .body{ font-size:1.08rem; line-height:1.55; }
+  .ycard .body{ font-size:1.12rem; line-height:1.58; }
 
   /* ---------------- ColonTown ---------------- */
   .ct{ margin:26px 0 8px; background:var(--card); border:1px solid var(--line); border-radius:20px; padding:20px; box-shadow:0 1px 3px rgba(70,55,40,.05); }
@@ -140,7 +142,7 @@
   .ct-tag{ color:var(--soft); font-size:.98rem; margin:0 0 14px; font-style:italic; }
   .ct-link{ display:flex; align-items:center; justify-content:space-between; padding:13px 0; border-top:1px solid var(--line); text-decoration:none; color:var(--ink); gap:12px; }
   .ct-link b{ font-weight:600; } .ct-link span{ display:block; }
-  .ct-link span span{ font-size:.84rem; color:var(--soft); margin-top:1px; }
+  .ct-link span span{ font-size:.95rem; color:var(--soft); margin-top:2px; }
   .ct-link .arr{ color:#C8BCAC; flex:0 0 auto; font-size:1.3rem; }
 
   /* ---------------- Settings + links ---------------- */
@@ -151,14 +153,14 @@
   .seg button{ font:inherit; font-size:.98rem; border:none; background:var(--card); color:var(--ink); padding:10px 18px; cursor:pointer; min-height:44px; }
   .seg button[aria-pressed="true"]{ background:var(--ink); color:#fff; font-weight:600; }
   .rate-row{ display:flex; align-items:center; gap:12px; }
-  .rate-row label{ font-size:.92rem; color:var(--soft); flex:0 0 auto; }
+  .rate-row label{ font-size:1rem; color:var(--soft); flex:0 0 auto; }
   input[type=range]{ flex:1; accent-color:var(--breathe); height:30px; }
   .linkbtn{ display:flex; align-items:center; justify-content:space-between; width:100%; background:var(--card); border:1px solid var(--line); border-radius:18px; padding:17px 18px; font:inherit; color:var(--ink); cursor:pointer; text-align:left; }
   .linkbtn .arr{ color:#C8BCAC; font-size:1.3rem; }
-  .linkbtn span span{ display:block; font-size:.83rem; color:var(--soft); font-weight:400; margin-top:2px; }
+  .linkbtn span span{ display:block; font-size:.95rem; color:var(--soft); font-weight:400; margin-top:2px; }
 
   /* ---------------- Topic grid ---------------- */
-  .lead{ color:var(--soft); margin:6px 0 18px; font-size:1.02rem; }
+  .lead{ color:var(--soft); margin:6px 0 18px; font-size:1.08rem; line-height:1.55; }
   .topics{ display:grid; grid-template-columns:1fr 1fr; gap:11px; }
   .topic{ border:1px solid var(--line); background:var(--card); border-radius:16px; padding:15px 14px; min-height:74px; cursor:pointer; font:inherit; text-align:left; color:var(--ink); display:flex; align-items:center; line-height:1.3; transition:transform .08s ease; }
   .topic:active{ transform:scale(.97); }
@@ -179,7 +181,7 @@
   .piece.lift{ border-top:5px solid var(--lift); }
   .piece.sit{ border-top:5px solid var(--sit); }
   .piece-foot{ display:flex; align-items:center; justify-content:space-between; margin-top:18px; gap:12px; }
-  .src{ font-size:.85rem; }
+  .src{ font-size:.96rem; }
   .src a{ color:var(--soft); text-decoration:none; border-bottom:1px dotted #C8BCAC; }
   .acts{ display:flex; gap:9px; flex:0 0 auto; }
   .act{ width:46px; height:46px; border-radius:50%; border:1px solid var(--line); background:var(--bg); cursor:pointer; display:flex; align-items:center; justify-content:center; padding:0; }
@@ -193,36 +195,39 @@
   .another{ width:100%; border:none; border-radius:16px; padding:17px; font:inherit; font-weight:600; font-size:1.08rem; color:#fff; cursor:pointer; }
   .another:active{ filter:brightness(.97); }
   .a-laugh{ background:var(--laugh); } .a-lift{ background:var(--lift); } .a-sit{ background:var(--sit); }
-  .counter{ text-align:center; color:var(--soft); font-size:.85rem; margin-top:12px; }
-  .note{ font-size:.82rem; color:var(--soft); font-style:italic; margin-top:20px; line-height:1.5; }
+  .counter{ text-align:center; color:var(--soft); font-size:.95rem; margin-top:12px; }
+  .note{ font-size:.95rem; color:var(--soft); font-style:italic; margin-top:20px; line-height:1.5; }
   .placeholder{ background:var(--card); border:1px dashed var(--line); border-radius:20px; padding:30px 22px; text-align:center; color:var(--soft); margin-top:14px; }
   .placeholder .serif{ font-size:1.2rem; color:var(--ink); display:block; margin-bottom:8px; }
 
   /* ---------------- Breathe ---------------- */
   .pickrow{ display:flex; gap:9px; flex-wrap:wrap; margin:4px 0 8px; }
-  .pick{ border:1px solid var(--line); background:var(--card); border-radius:999px; padding:11px 16px; font:inherit; font-size:.96rem; cursor:pointer; color:var(--ink); min-height:44px; }
-  .pick:active{ background:var(--breathe-bg); }
-  .section-h{ font-size:.82rem; letter-spacing:.06em; text-transform:uppercase; color:var(--soft); font-weight:600; margin:22px 0 9px; }
+  .pick{ border:1px solid var(--line); background:var(--card); border-radius:999px; padding:12px 17px; font:inherit; font-size:1rem; cursor:pointer; color:var(--ink); min-height:46px; }
+  .pick:active,.pick.sel{ background:var(--breathe-bg); border-color:#Bcd0ec; }
+  .pick.sel{ font-weight:600; color:#33507e; }
+  .section-h{ font-size:.94rem; letter-spacing:.05em; text-transform:uppercase; color:var(--soft); font-weight:600; margin:22px 0 9px; }
   .practiced{
-    background:var(--sit-bg); border:1px solid #CFE4E0; border-radius:16px; padding:15px 17px; margin:6px 0 4px;
-    font-size:.98rem; line-height:1.55; color:#2F5A55;
+    background:var(--sit-bg); border:1px solid #CFE4E0; border-radius:16px; padding:16px 17px; margin:6px 0 4px;
+    font-size:1.04rem; line-height:1.58; color:#2F5A55;
   }
   .practiced b{ color:#26544E; }
   .guide{ background:var(--breathe-bg); border:1px solid #D8E4F4; border-radius:20px; padding:22px; margin-bottom:8px; }
   .guide h3{ font-size:1.25rem; margin:0 0 4px; }
-  .guide .dur{ color:var(--soft); font-size:.9rem; margin-bottom:14px; }
+  .guide .dur{ color:var(--soft); font-size:.98rem; margin-bottom:14px; }
   .guide p{ margin:0 0 12px; font-size:1.1rem; line-height:1.6; }
   .guide .speakbtn{ display:inline-flex; align-items:center; gap:9px; border:none; border-radius:14px; background:var(--breathe); color:#fff; font:inherit; font-weight:600; padding:14px 20px; cursor:pointer; font-size:1.02rem; }
   .guide .speakbtn.on{ background:#33507e; }
   .res{ display:flex; align-items:center; justify-content:space-between; gap:12px; background:var(--card); border:1px solid var(--line); border-radius:16px; padding:15px 16px; margin-bottom:10px; text-decoration:none; color:var(--ink); }
   .res b{ font-weight:600; } .res span{ display:block; }
-  .res span span{ font-size:.83rem; color:var(--soft); margin-top:2px; }
+  .res span span{ font-size:.96rem; color:var(--soft); margin-top:2px; }
   .res .arr{ color:#C8BCAC; flex:0 0 auto; font-size:1.25rem; }
-  .freebadge{ font-size:.7rem; font-weight:700; color:#2f7d4f; background:#e3f4e9; padding:2px 8px; border-radius:999px; letter-spacing:.03em; }
+  .btip{ background:var(--breathe-bg); border:1px solid #D2E0F2; border-radius:16px; padding:16px 18px; margin:4px 0 8px; font-size:1.04rem; line-height:1.58; color:#2E4A70; }
+  .btip[hidden]{ display:none; }
+  .freebadge{ font-size:.8rem; font-weight:700; color:#2f7d4f; background:#e3f4e9; padding:2px 8px; border-radius:999px; letter-spacing:.03em; }
 
   /* ---------------- Tab bar ---------------- */
   .tabbar{ position:fixed; left:0; right:0; bottom:0; z-index:50; background:rgba(251,247,241,.94); -webkit-backdrop-filter:saturate(180%) blur(16px); backdrop-filter:saturate(180%) blur(16px); border-top:1px solid var(--line); display:flex; padding-bottom:env(safe-area-inset-bottom); }
-  .tab{ flex:1; background:none; border:none; cursor:pointer; padding:9px 2px 7px; display:flex; flex-direction:column; align-items:center; gap:3px; color:var(--soft); font-size:.66rem; font-weight:600; }
+  .tab{ flex:1; background:none; border:none; cursor:pointer; padding:9px 2px 7px; display:flex; flex-direction:column; align-items:center; gap:3px; color:var(--soft); font-size:.72rem; font-weight:600; }
   .tab svg{ width:26px; height:26px; stroke:var(--soft); fill:none; stroke-width:1.7; }
   .tab[data-active="true"]{ color:var(--ink); }
   .tab[data-active="true"][data-k="home"]{ color:var(--home); }
@@ -236,10 +241,66 @@
 </head>
 <body>
 
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+<defs>
+<radialGradient id="haloK" cx="50%" cy="50%" r="50%">
+<stop offset="0%" stop-color="#FBE6D8" stop-opacity="0.85"/>
+<stop offset="100%" stop-color="#FBE6D8" stop-opacity="0"/>
+</radialGradient>
+<symbol id="lotusIcon" viewBox="0 0 220 195">
+<circle cx="110" cy="126" r="80" fill="url(#haloK)"/>
+<g fill="none" stroke-linecap="round" opacity="1" stroke-width="8.5">
+<path d="M18 108 Q110 -76 202 108" stroke="#F0574A"/>
+<path d="M26 108 Q110 -60 194 108" stroke="#F6962F"/>
+<path d="M34 108 Q110 -44 186 108" stroke="#F4CB33"/>
+<path d="M42 108 Q110 -28 178 108" stroke="#3FB877"/>
+<path d="M50 108 Q110 -12 170 108" stroke="#3E81E2"/>
+<path d="M58 108 Q110 4 162 108" stroke="#8E5BD0"/>
+</g>
+<g stroke="#C75F86" stroke-width="0.9">
+<g fill="#F584A8">
+<path transform="translate(110 128) rotate(0) scale(0.62)" d="M0 0 C -15 -28 -12 -68 0 -90 C 12 -68 15 -28 0 0 Z"/>
+<path transform="translate(110 128) rotate(45) scale(0.62)" d="M0 0 C -15 -28 -12 -68 0 -90 C 12 -68 15 -28 0 0 Z"/>
+<path transform="translate(110 128) rotate(90) scale(0.62)" d="M0 0 C -15 -28 -12 -68 0 -90 C 12 -68 15 -28 0 0 Z"/>
+<path transform="translate(110 128) rotate(135) scale(0.62)" d="M0 0 C -15 -28 -12 -68 0 -90 C 12 -68 15 -28 0 0 Z"/>
+<path transform="translate(110 128) rotate(180) scale(0.62)" d="M0 0 C -15 -28 -12 -68 0 -90 C 12 -68 15 -28 0 0 Z"/>
+<path transform="translate(110 128) rotate(225) scale(0.62)" d="M0 0 C -15 -28 -12 -68 0 -90 C 12 -68 15 -28 0 0 Z"/>
+<path transform="translate(110 128) rotate(270) scale(0.62)" d="M0 0 C -15 -28 -12 -68 0 -90 C 12 -68 15 -28 0 0 Z"/>
+<path transform="translate(110 128) rotate(315) scale(0.62)" d="M0 0 C -15 -28 -12 -68 0 -90 C 12 -68 15 -28 0 0 Z"/>
+</g>
+<g fill="#F8A6C0">
+<path transform="translate(110 128) rotate(22.5) scale(0.48)" d="M0 0 C -15 -28 -12 -68 0 -90 C 12 -68 15 -28 0 0 Z"/>
+<path transform="translate(110 128) rotate(67.5) scale(0.48)" d="M0 0 C -15 -28 -12 -68 0 -90 C 12 -68 15 -28 0 0 Z"/>
+<path transform="translate(110 128) rotate(112.5) scale(0.48)" d="M0 0 C -15 -28 -12 -68 0 -90 C 12 -68 15 -28 0 0 Z"/>
+<path transform="translate(110 128) rotate(157.5) scale(0.48)" d="M0 0 C -15 -28 -12 -68 0 -90 C 12 -68 15 -28 0 0 Z"/>
+<path transform="translate(110 128) rotate(202.5) scale(0.48)" d="M0 0 C -15 -28 -12 -68 0 -90 C 12 -68 15 -28 0 0 Z"/>
+<path transform="translate(110 128) rotate(247.5) scale(0.48)" d="M0 0 C -15 -28 -12 -68 0 -90 C 12 -68 15 -28 0 0 Z"/>
+<path transform="translate(110 128) rotate(292.5) scale(0.48)" d="M0 0 C -15 -28 -12 -68 0 -90 C 12 -68 15 -28 0 0 Z"/>
+<path transform="translate(110 128) rotate(337.5) scale(0.48)" d="M0 0 C -15 -28 -12 -68 0 -90 C 12 -68 15 -28 0 0 Z"/>
+</g>
+<g fill="#FFCFE0">
+<path transform="translate(110 128) rotate(0) scale(0.32)" d="M0 0 C -15 -28 -12 -68 0 -90 C 12 -68 15 -28 0 0 Z"/>
+<path transform="translate(110 128) rotate(60) scale(0.32)" d="M0 0 C -15 -28 -12 -68 0 -90 C 12 -68 15 -28 0 0 Z"/>
+<path transform="translate(110 128) rotate(120) scale(0.32)" d="M0 0 C -15 -28 -12 -68 0 -90 C 12 -68 15 -28 0 0 Z"/>
+<path transform="translate(110 128) rotate(180) scale(0.32)" d="M0 0 C -15 -28 -12 -68 0 -90 C 12 -68 15 -28 0 0 Z"/>
+<path transform="translate(110 128) rotate(240) scale(0.32)" d="M0 0 C -15 -28 -12 -68 0 -90 C 12 -68 15 -28 0 0 Z"/>
+<path transform="translate(110 128) rotate(300) scale(0.32)" d="M0 0 C -15 -28 -12 -68 0 -90 C 12 -68 15 -28 0 0 Z"/>
+</g>
+</g>
+<g fill="#F8B81C" stroke="none">
+<circle cx="110" cy="126" r="9"/>
+<circle cx="110" cy="114" r="2.2"/><circle cx="99" cy="123" r="2.2"/><circle cx="121" cy="123" r="2.2"/>
+<circle cx="103" cy="134" r="2.2"/><circle cx="117" cy="134" r="2.2"/>
+</g>
+</symbol>
+</defs>
+</svg>
+
+
 <!-- ============ ONBOARDING ============ -->
 <div class="onboard" id="onboard">
   <div class="ob-inner">
-    <div class="ob-emoji">🫶</div>
+    <div class="ob-emoji"><svg class="lotusico" viewBox="0 0 220 195" width="118" role="img" aria-label="A lotus in bloom under a rainbow"><use href="#lotusIcon"/></svg></div>
     <h1 class="ob-title">Katie's Place<br>of Refuge</h1>
     <div class="ob-sub">For You · With You</div>
     <div class="ob-body" id="obBody">
@@ -260,7 +321,7 @@
 <section class="screen active" id="s-home">
   <header class="hero">
     <div class="hero-content">
-      <div class="hero-emoji">🫶</div>
+      <div class="hero-emoji"><svg class="lotusico" viewBox="0 0 220 195" width="92" role="img" aria-label="A lotus in bloom under a rainbow"><use href="#lotusIcon"/></svg></div>
       <h1 class="hero-title">Katie's Place of Refuge</h1>
       <div class="hero-sub">For You · With You</div>
     </div>
@@ -351,9 +412,10 @@
   <div class="practiced">These aren't a fringe thing. Meditation and guided imagery are used every day by people in chemoradiation — for nausea, fear, and sleepless nights — and they're <b>backed by real research and offered inside major cancer centers</b>. This is an ordinary, proven tool. You're in good company using it.</div>
 
   <div class="section-h">How long do you have?</div>
-  <div class="pickrow"><button class="pick">2 min</button><button class="pick">5 min</button><button class="pick">10 min</button><button class="pick">Longer</button></div>
+  <div class="pickrow" id="timeRow"><button class="pick">2 min</button><button class="pick">5 min</button><button class="pick">10 min</button><button class="pick">Longer</button></div>
   <div class="section-h">Or, what's going on?</div>
-  <div class="pickrow"><button class="pick">The Green Wave</button><button class="pick">Fear &amp; 3am</button><button class="pick">Can't sleep</button><button class="pick">Tension</button><button class="pick">Just need quiet</button></div>
+  <div class="pickrow" id="sitRow"><button class="pick">The Green Wave</button><button class="pick">Fear &amp; 3am</button><button class="pick">Can't sleep</button><button class="pick">Tension</button><button class="pick">Just need quiet</button></div>
+  <div class="btip" id="breatheTip" hidden></div>
 
   <div class="section-h">Right here, right now</div>
   <div class="guide">
@@ -455,6 +517,27 @@ CONTENT.sit.green=[
   p("No fixing here. No tricks. Just \u2014 yes, this is hard, and you're allowed to hate it, and you don't owe anyone a brave face right now.","mac"),
   p("Plenty of people have lain exactly where you're lying, feeling exactly this, watching exactly this ceiling. You're in quiet company, even on a gray afternoon.","ins"),
   p("Breathe. That's the whole assignment. In, and out. The wave rises and the wave falls, and it isn't asking you to do anything but let it pass through.","rcc")
+];
+
+/* ----- RUNNING ON EMPTY ----- */
+CONTENT.laugh.empty=[
+  p("New definition of a productive day: showered. That's it. That's the whole list. Gold star, full marks, retire the trophy.","rc"),
+  p("Cancer fatigue isn't regular tired. Regular tired gets fixed by a nap. This is a tired that watches you take a nap and remains entirely unimpressed.","csn"),
+  p("You now budget energy the way a Victorian household budgeted coal. A shower and a phone call, in the same day? Reckless. Decadent, even.","mac"),
+  p("You've fallen asleep mid-sentence, mid-show, mid-thought, possibly mid-blink. Your body has simply stopped asking your permission first.","rcc"),
+  p("Someone asked what you did today and you had to think hard before landing on \u201cexisted, mostly. It was a lot.\u201d","rc")
+];
+CONTENT.lift.empty=[
+  p("This depth of tired is the treatment doing heavy lifting, not you being weak. People who finished promise the energy comes back \u2014 slowly, then all at once.","csn"),
+  p("Resting isn't quitting. People who came through say the ones who let themselves rest, instead of fighting it, came out less broken on the other side.","ins"),
+  p("A short shuffle to the mailbox on a bad day counts as much as a marathon used to. Recalibrate the scoreboard. You're still very much on it.","mac"),
+  p("The fog lifts. One ordinary morning you'll notice a little more in the tank than yesterday \u2014 and that's exactly how it starts coming back.","rcc")
+];
+CONTENT.sit.empty=[
+  p("You're not lazy. You're not letting anyone down. You're a person whose body is pouring everything it has into a hard job, with nothing left over. That's allowed.","csn"),
+  p("You don't have to earn rest. You don't have to justify the nap. Lie down. The to-do list will keep, and so will the world.","rc"),
+  p("This tired is real and heavy, and pretending otherwise just stacks shame on top of exhaustion. You can simply be wiped out, with no apology attached.","mac"),
+  p("Let the day be small. A small day is still a day you got through, and getting through is the whole goal today.","ins")
 ];
 
 /* ----- POTTY STUFF ----- */
@@ -594,6 +677,191 @@ CONTENT.sit.people=[
   p("Some people will let you down. They'll vanish, or say the wrong thing, or make it about themselves. That's allowed to hurt, and it is not your job to manage their discomfort right now.","mac"),
   p("You don't have to perform being okay for the people who love you. Sometimes the bravest thing is letting them see you not okay, and trusting them to stay.","rc")
 ];
+
+/* ----- THE ROUTINE THAT ISN'T ----- */
+CONTENT.laugh.routine=[
+  p("You now have a dedicated \u201cradiation outfit,\u201d chosen entirely for how fast it comes off and back on. Fashion is dead. Logistics has won, decisively.","rcc"),
+  p("The waiting room has quietly become your strangest social club. Same faces, same chairs, a small nod of solidarity \u2014 and absolutely nobody wants a loyalty punch card.","csn"),
+  p("You've gotten so efficient at the daily zap you could practically clock in, lie down, and clock out in your sleep. Some mornings you very nearly do.","mac"),
+  p("The radiation table is the one place on earth where someone says \u201cdon't move\u201d and your body instantly invents seven brand-new, urgent itches.","rc"),
+  p("You measure your week in appointments now, not days. \u201cIt's not Tuesday, it's day fourteen.\u201d Time has gone completely feral.","ins")
+];
+CONTENT.lift.routine=[
+  p("The daily grind is also a daily countdown. Every appointment crossed off is one closer to done. The calendar is working in your favor, even when it doesn't feel like it.","csn"),
+  p("People who finished say the routine, oddly, becomes a comfort \u2014 a rhythm to hold onto. You get good at it, and that competence is its own quiet strength.","ins"),
+  p("The techs and nurses you see every day are genuinely rooting for you. Someone who's done it says those daily faces turned into unexpected bright spots.","mac")
+];
+CONTENT.sit.routine=[
+  p("There's a particular exhaustion in a life organized entirely around appointments. It's a lot, even when each visit is \u201croutine.\u201d You're allowed to be worn down by the sheer relentlessness.","csn"),
+  p("Showing up, day after day, when you feel awful \u2014 that's quiet, unglamorous courage, and it counts, even though nobody's handing out medals for it.","mac"),
+  p("You don't have to be a good patient today. You can be a tired, grumpy, thoroughly-over-it one who still shows up. That is more than enough.","rc")
+];
+
+/* ----- ALMOST THERE. REALLY. ----- */
+CONTENT.laugh.almost=[
+  p("\u201cAlmost done\u201d is a phrase you now greet with deep suspicion, having learned that cancer's sense of \u201calmost\u201d is roughly that of a road trip with a small child.","rcc"),
+  p("You're counting down treatments like an Advent calendar, except the little daily treat is \u201cone fewer appointment\u201d \u2014 and somehow that tastes better than chocolate.","csn"),
+  p("The finish line keeps doing that thing where it's right there and also still somehow requires pants, a parking spot, and three more weeks.","rc")
+];
+CONTENT.lift.almost=[
+  p("The back half is real and it's hard, and it ends. People who stood exactly where you are want you to know: you keep being you the whole way through, right up to the last day.","csn"),
+  p("Halfway means the hardest math is behind you. More of this is done than is left. Let that be true today, even if it doesn't yet feel like enough.","ins"),
+  p("Someone who rang that end-of-treatment bell wants you to know the day comes. It really does. And the you who gets there will be so proud of the you reading this right now.","mac")
+];
+CONTENT.sit.almost=[
+  p("The home stretch can be the hardest part \u2014 the tank is empty and the end isn't quite here yet. Being worn thin this close to done isn't weakness. It's the weight of all of it, added up.","csn"),
+  p("You don't have to sprint to the finish. Crawling counts. Resting counts. Getting there slowly is still getting there.","mac"),
+  p("It's okay if \u201calmost done\u201d stirs up complicated feelings \u2014 relief and fear and exhaustion all tangled together. You don't have to sort them out. Just let them be here with you.","rc")
+];
+
+/* ----- THE BIGGER PICTURE ----- */
+CONTENT.laugh.big=[
+  p("You've discovered that \u201cthoughts and prayers\u201d lands very differently when they're actually aimed at you \u2014 and you'll take all of them, plus the casserole, thank you very much.","csn"),
+  p("Cancer has made a philosopher of you at 3am, whether you signed up or not. The biggest questions in existence, no office hours, truly terrible scheduling.","rc"),
+  p("You've started bargaining with the universe in oddly specific terms. The universe hasn't formally responded, but you feel the negotiations are at least ongoing.","rcc")
+];
+CONTENT.lift.big=[
+  p("Whatever you lean on \u2014 faith, nature, love, a quiet sense of something larger \u2014 people who came through say it carried more weight than they expected. Lean freely. It's allowed to hold you up.","csn"),
+  p("Many people find a hard season like this cracks something open \u2014 a deeper gratitude, a clearer sense of what matters. Not a gift you'd have asked for, but real all the same.","ins"),
+  p("You don't need answers to the big questions. People who walked this say the peace came less from answers and more from letting the questions simply be okay to hold.","mac")
+];
+CONTENT.sit.big=[
+  p("It's okay if your faith feels shaky right now, or if you're angry at God, or the universe, or no one in particular. None of that is a failure. It's part of wrestling with something enormous.","csn"),
+  p("You don't have to find the meaning today. Sometimes a hard thing is just a hard thing, and the search for a lesson can wait. You're allowed to simply not know.","mac"),
+  p("Whatever quiet thing steadies you \u2014 a prayer, a breath, a window, a memory \u2014 it is enough. You don't have to justify what gives you peace.","rc")
+];
+
+/* ----- THE GOOD STUFF ----- */
+CONTENT.laugh.good=[
+  p("Your list of life's great pleasures has been radically simplified: a good bowel day, a sip that tasted right, a nap that actually worked. Truly living the dream over here.","rcc"),
+  p("You've become absurdly, almost embarrassingly grateful for things like a comfortable chair and a warm drink. And you know what? The chair has earned it.","csn"),
+  p("Small joys hit different now. A dog. A breeze. A show you love. You're squeezing real delight out of things you'd have walked straight past a year ago.","ins")
+];
+CONTENT.lift.good=[
+  p("People who came through say the small joys never shrank back to feeling small. The warm mug, the good light, the kind word \u2014 that sharpened gratitude is one thing worth keeping from all this.","csn"),
+  p("Hope doesn't have to be big or certain. Some days it's just \u201cmaybe tomorrow is a little easier.\u201d That counts. That's the real kind.","mac"),
+  p("You are still here, still you, still able to be moved by a good thing. That's not nothing. On the hard days, that's actually everything.","ins")
+];
+CONTENT.sit.good=[
+  p("You don't have to feel grateful on cue. Forced gratitude isn't gratitude \u2014 it's just one more thing to perform. The good stuff will find you in its own time.","csn"),
+  p("Some days there's no silver lining and no small joy, and that's okay too. You don't have to manufacture brightness. Just being here is enough for today.","mac"),
+  p("When a good moment does come \u2014 a real laugh, a sip that worked, a sweet hour \u2014 let yourself have it fully, without bracing for what's next. You've earned the right to just enjoy it.","rc")
+];
+
+/* ----- JUST LIFE ----- */
+CONTENT.laugh.life=[
+  p("Somewhere out there, two strangers are in a furious argument about whether a hot dog is a sandwich, and the beautiful part is it has nothing to do with you. Step in. Pick a side. Be free.","rc"),
+  p("The cat still knocks the cup off the table while holding eye contact. Cancer changed everything except its commitment to chaos. There's a strange comfort in that.","rcc"),
+  p("Reminder that the pineapple-pizza debate rages on without you, somewhere a raccoon is winning a fight with a trash can, and the world remains gloriously, reliably ridiculous.","csn"),
+  p("Your streaming app does not know you're sick. It only wants to know if you're still watching. Yes. Yes you are. Mind your business, app.","ins")
+];
+CONTENT.lift.life=[
+  p("The ordinary world is still turning out there \u2014 seasons changing, music being made, gardens growing, dumb jokes landing \u2014 and all of it is still yours to come back to. It's waiting, not going anywhere.","csn"),
+  p("There's a whole life that isn't about cancer, and it still has your name on it \u2014 the recipes, the trips, the books, the small ambitions. Treatment is a chapter. The rest of the story is still being written.","ins"),
+  p("Someone who finished says the dumbest, most ordinary day \u2014 groceries, a walk, a forgettable Tuesday \u2014 became the thing they were most grateful to get back. Those days are coming back for you.","mac")
+];
+CONTENT.sit.life=[
+  p("It's okay to want a break from being a patient \u2014 to talk about anything else, to be a regular person with regular opinions about regular nonsense for a while. That's not denial. It's survival.","csn"),
+  p("You are so much more than this diagnosis. The whole person you've always been is still entirely here \u2014 all her tastes and quirks and loves. Cancer is just renting space, loudly.","rc"),
+  p("Sometimes the kindest thing is to close the app, put on something you love, and let your mind go somewhere that has nothing to do with any of this. Permission granted. Go.","mac")
+];
+
+/* ---------------- Deepening: more voices for the topics she'll reach for most ---------------- */
+CONTENT.laugh.green.push(
+  p("Toothpaste is now a high-stakes gamble. Minty? Sweet? Either way your stomach has opinions and is not shy about sharing them with the whole room.","rc"),
+  p("You've become a connoisseur of the slow, strategic sit-up. No sudden moves. You rise from bed like a drawbridge being lowered with great care and ceremony.","csn"),
+  p("The smell of coffee, once a dear friend, now arrives like an ambush. Betrayed by the very bean that carried you through your entire adult life.","rcc")
+);
+CONTENT.lift.green.push(
+  p("One person who finished says the nausea taught her a new respect for her body's signals that she actually kept \u2014 she listens now, rests sooner. An odd souvenir, but hers.","ins"),
+  p("The meds get adjusted, the bad combinations swapped. People say the queasy stretch that feels endless often eases once the team fine-tunes things \u2014 tell them, they can help.","csn"),
+  p("You won't always plan your whole day around a wave of nausea. There's a version of your calendar coming back that's just\u2026 a calendar. Boring. Glorious.","mac")
+);
+CONTENT.sit.green.push(
+  p("Queasy all day with nothing to show for it is its own special exhaustion \u2014 no fever, no cast, just a body quietly refusing. It's real. You're not exaggerating it.","csn"),
+  p("You're allowed to cancel. To beg off the visit, the call, the thing you said yes to. \u201cI feel too sick today\u201d is a complete and honourable reason.","mac"),
+  p("Some hours the most you can do is lie still and wait for it to pass. That isn't giving up. That's weathering it. There's a difference, and you're doing the second one.","ins")
+);
+
+CONTENT.laugh.empty.push(
+  p("You stood up to fetch something, arrived in the kitchen, and now have no memory of the mission. Chemo brain and bone-tiredness, working together against you.","rcc"),
+  p("Your screen-time report is a quiet tragicomedy: hours logged, nothing accomplished, several shows \u201cwatched\u201d entirely through your eyelids.","rc"),
+  p("You've started rating chairs and couches the way critics rate restaurants. Lumbar support is, at this point, a genuine love language.","csn"),
+  p("People keep chirping \u201cget some rest!\u201d as if you haven't been resting like it's a full-time job, with overtime, and absolutely no sign of a raise.","mac"),
+  p("The to-do list has three items. It has had the same three items for a week. You and the list have reached a quiet, mutual understanding.","ins")
+);
+CONTENT.lift.empty.push(
+  p("Energy comes back in patches before it comes back for good \u2014 a decent hour here, a clear afternoon there. People say grab those patches and enjoy them without overspending.","ins"),
+  p("You don't have to be impressive right now. You have to get through. Impressive can wait for a body that has something to spare again \u2014 and it will.","csn"),
+  p("Someone years out barely remembers the bone-tired weeks now. The body forgets exhaustion faster than you'd expect, once it's finally allowed to rest.","mac"),
+  p("Naps are doing real work \u2014 the healing happens in the rest, not in spite of it. You're not lazy; you're under construction.","rcc")
+);
+CONTENT.sit.empty.push(
+  p("The world keeps moving fast around you while you move slow, and that mismatch is disorienting and a little lonely. It's okay to step out of the race for a while.","mac"),
+  p("You miss being capable. That's a real grief, not a complaint. Wanting your stamina back is wanting yourself back, and that makes complete sense.","csn"),
+  p("If today all you did was breathe and get through, that's a full and complete day. Cross it off. It counts.","ins"),
+  p("You don't have to explain your tiredness to anyone or prove it's bad enough. It's yours, it's real, and it doesn't need a permission slip.","rc")
+);
+
+CONTENT.laugh.potty.push(
+  p("You have opinions about toilet paper now. Strong ones. You could give a TED talk. The wet wipes are non-negotiable and you will hear no arguments.","rcc"),
+  p("Public restrooms have been quietly re-ranked in your mind into a detailed personal review system: accessibility, cleanliness, and crucially, how fast you can reach them.","csn"),
+  p("\u201cTrust no fart\u201d belongs embroidered on a pillow. It's the hardest-won wisdom of this whole experience, and you live by it now, devoutly.","rcc"),
+  p("You've become fluent in a whole new vocabulary with your care team \u2014 words you'd never have said in polite company, now delivered with total clinical calm.","mac")
+);
+CONTENT.lift.potty.push(
+  p("The urgency eases for most people once treatment winds down and things settle. The frantic dash-to-the-bathroom era is a phase, not a forever.","csn"),
+  p("You've handled the least dignified parts of this with more grace than you give yourself any credit for. That's a quiet strength most people never have to find.","ins"),
+  p("Someone years out promises the day comes when a bathroom is just a bathroom again \u2014 not a destination you're forever tracking. Ordinary really does return.","mac"),
+  p("Your body's plumbing is healing from something genuinely hard. Be patient with it the way you'd be with anyone recovering from a real injury \u2014 because that is what this is.","rcc")
+);
+CONTENT.sit.potty.push(
+  p("The loss of control over something so basic is genuinely destabilising. Of course it rattles you. Anyone would be rattled. You're not weak for finding this hard.","mac"),
+  p("You don't have to make jokes about it if you don't want to. Some days it's just awful and humiliating, and you're allowed to feel exactly that, no spin required.","csn"),
+  p("Needing help with the most private things is its own particular kind of hard. If you're grieving your privacy, that grief is valid and real.","rcc"),
+  p("This part is lonely because the world stays silent about it. But you are not the only one living it right now \u2014 not by a long way. Quiet company, even here.","ins")
+);
+
+CONTENT.laugh.club.push(
+  p("At 3am your brain becomes a true-crime podcast about your own body \u2014 narrated dramatically, full of cliffhangers, with no resolution by morning.","rc"),
+  p("You've fact-checked your symptoms against the internet at 3am and emerged more frightened, less informed, and somehow an expert in the rarest disease known to science.","rcc"),
+  p("Daytime you is reasonable and calm. 3am you has a whiteboard, a red-string conspiracy wall, and absolutely zero adult supervision.","csn"),
+  p("The clock is your nemesis at 3am. 3:00. You sigh. A geological age passes. 3:04. You consider screaming \u2014 quietly, so as not to wake anyone.","mac"),
+  p("Everyone says \u201cget a good night's sleep!\u201d The night and I are not on speaking terms. We have a complicated relationship and it is seeing other people.","rc")
+);
+CONTENT.lift.club.push(
+  p("Daylight genuinely changes things. People say the same fear that felt enormous at 3am shrinks to something manageable by 9am. Try to hold the verdicts until morning.","csn"),
+  p("You won't always lie awake doing this math. Sleep comes back. The nights get quieter as the fear loosens its grip \u2014 and it does loosen its grip.","ins"),
+  p("Naming the fear out loud \u2014 to a person, a journal, a notes app \u2014 takes some of its power. People say the 3am monsters shrink when you drag them into the light.","mac"),
+  p("The fact that you keep facing these nights and getting up the next day is its own quiet evidence: you're more durable than the 3am voice insists you are.","rc")
+);
+CONTENT.sit.club.push(
+  p("There's nothing wrong with you for lying awake afraid. A frightened mind in the dark is doing a very human thing. You don't have to fix it to deserve rest.","csn"),
+  p("You don't have to be positive at 3am. You don't have to reframe a single thing. You can just be a scared person in the dark, and that is allowed and understandable.","rc"),
+  p("If sleep won't come, you don't have to wrestle it into submission. Sometimes just resting \u2014 eyes closed, breathing, not sleeping, just resting \u2014 is enough to reach morning.","mac"),
+  p("Somewhere out there another person is watching the same 3am ceiling with the same churning thoughts. You're awake together, in a strange quiet way. Not alone in it.","ins")
+);
+
+CONTENT.laugh.done.push(
+  p("You've reached the stage of treatment where your entire inner monologue is just one long, flat, fluorescent-lit sigh.","rcc"),
+  p("If you have to put on one more hospital gown you're going to start a small, very polite fire. Polite. But a fire.","rc"),
+  p("Your patience left. It didn't even say goodbye. It just packed a bag one morning and got in the car.","csn"),
+  p("\u201cYou're so strong\u201d \u2014 ma'am, I am held together with snack crackers and pure spite, but thank you, sincerely.","mac"),
+  p("You've started measuring your willingness to do things in spoons, and today you have approximately one plastic spoon, slightly cracked.","rcc")
+);
+CONTENT.lift.done.push(
+  p("Over it and still doing it is the most common state there is for people in the thick of this. You're not failing. You're just human, and tired, and still here.","csn"),
+  p("The fact that you're this done and went anyway \u2014 that's not weakness, that's the realest kind of strength there is. The kind that runs on empty and shows up regardless.","mac"),
+  p("People who finished say the 'done' feeling peaked, and then the end actually arrived, almost anticlimactically. You're closer than the exhaustion lets you believe.","ins"),
+  p("Hard days are weather, not climate. This will pass over you. It always has, every single time so far.","rc"),
+  p("You don't have to feel strong to be doing something strong. The two come apart all the time, especially now.","csn")
+);
+CONTENT.sit.done.push(
+  p("You've been carrying this a long time and the weight is cumulative. Of course you're done. That's not a character flaw \u2014 it's the honest math of a long, hard road.","csn"),
+  p("You don't have to talk yourself into a better attitude. You're allowed to be flattened by it today \u2014 no fixing, no reframing, no bright side required.","mac"),
+  p("Done is a feeling, not a failing. It can sit right next to everything you're still doing, and both can be completely true at once.","rc"),
+  p("If today the whole win is that you didn't have to be cheerful about it \u2014 take the win. You don't owe anyone brightness.","ins")
+);
 
 /* ---------------- Favorites store ---------------- */
 function hash(s){ let h=5381; for(let i=0;i<s.length;i++){ h=((h<<5)+h)+s.charCodeAt(i); h|=0; } return (h>>>0).toString(36); }
@@ -746,8 +1014,9 @@ bs.addEventListener('click',()=>{
 
 /* ---------------- Comfort settings ---------------- */
 const txtN=document.getElementById('txtN'), txtL=document.getElementById('txtL');
-txtN.addEventListener('click',()=>{ document.body.classList.remove('lg'); txtN.setAttribute('aria-pressed','true'); txtL.setAttribute('aria-pressed','false'); });
-txtL.addEventListener('click',()=>{ document.body.classList.add('lg'); txtL.setAttribute('aria-pressed','true'); txtN.setAttribute('aria-pressed','false'); });
+txtN.addEventListener('click',()=>{ document.documentElement.classList.remove('lg'); txtN.setAttribute('aria-pressed','true'); txtL.setAttribute('aria-pressed','false'); try{localStorage.setItem('kpr_lg','0');}catch(e){} });
+txtL.addEventListener('click',()=>{ document.documentElement.classList.add('lg'); txtL.setAttribute('aria-pressed','true'); txtN.setAttribute('aria-pressed','false'); try{localStorage.setItem('kpr_lg','1');}catch(e){} });
+try{ if(localStorage.getItem('kpr_lg')==='1'){ document.documentElement.classList.add('lg'); txtL.setAttribute('aria-pressed','true'); txtN.setAttribute('aria-pressed','false'); } }catch(e){}
 
 /* ---------------- Onboarding ---------------- */
 const onboard=document.getElementById('onboard');
@@ -768,6 +1037,35 @@ document.getElementById('obYes').addEventListener('click',()=>{
   onboard.classList.add('gone');
   try{ localStorage.setItem('kpr_seen','1'); }catch(e){}
 });
+
+/* ---------------- Breathe pickers ---------------- */
+const TIME_TIPS={
+  '2 min':'Perfect \u2014 the breath just below takes about two minutes. Start right there.',
+  '5 min':'Try the breath below to settle in, then let it run a little longer at your own pace. Insight Timer (linked below) lets you filter to 5-minute sessions.',
+  '10 min':'Insight Timer and the Memorial Sloan Kettering library both have lovely 10-minute guided sessions \u2014 the links are just below.',
+  'Longer':'For a longer sit, the MSK library and Calm have full guided sessions and sleep stories. Links are just below.'
+};
+const SIT_TIPS={
+  'The Green Wave':'For nausea, gentle guided imagery helps many people \u2014 picture a calm, safe place and let the breath carry the queasiness along. Start with the breath below; the Cancer Support Community\u2019s \u201cinhale healing\u201d video (linked below) is made for exactly this.',
+  'Fear & 3am':'When fear spikes, slow the out-breath \u2014 make it longer than the in-breath. The breath below does just that. Tara Brach\u2019s recordings (linked below) are loved for fear and 3am.',
+  "Can't sleep":'Calm\u2019s sleep stories (linked below) are the community favourite for restless nights. The breath below can help you drift, too.',
+  'Tension':'A body scan or muscle-relaxation track eases held tension \u2014 CancerCare\u2019s (linked below) is a good one. Begin with the breath below.',
+  'Just need quiet':'No guidance, no goal. The breath below is here whenever you want it \u2014 or open Insight Timer and pick a plain silent timer.'
+};
+function wirePicks(rowId, tips){
+  const row=document.getElementById(rowId);
+  row.querySelectorAll('.pick').forEach(b=>{
+    b.addEventListener('click',()=>{
+      row.querySelectorAll('.pick').forEach(x=>x.classList.remove('sel'));
+      b.classList.add('sel');
+      const tip=document.getElementById('breatheTip');
+      tip.textContent=tips[b.textContent.trim()]||'';
+      tip.hidden=false;
+    });
+  });
+}
+wirePicks('timeRow', TIME_TIPS);
+wirePicks('sitRow', SIT_TIPS);
 
 /* iOS: prime speech on first touch */
 document.addEventListener('touchstart',function prime(){ if(window.speechSynthesis){ window.speechSynthesis.getVoices(); } document.removeEventListener('touchstart',prime); },{once:true});
